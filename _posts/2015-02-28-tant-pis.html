@@ -41,7 +41,6 @@ LazyArray.prototype.collect = function LazyArray_collect() {
     processorsLoop:
     for (j = 0; j < this.queue.length; ++j) {
       processor = this.queue[j];
-      logger.debug('processing', processor);
       switch (processor.type) {
       case TYPE.EACH:
         processor.fn.call(processor.thisArg, element, elementIndex, this.array);
@@ -56,9 +55,6 @@ LazyArray.prototype.collect = function LazyArray_collect() {
         element = processor.fn.call(processor.thisArg, element, elementIndex, this.array);
         break;
       default:
-        if (logError) {
-          logError('Unknown processor type:', processor.type);
-        }
         break;
       }
     }
