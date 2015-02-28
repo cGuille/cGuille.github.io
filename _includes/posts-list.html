@@ -1,0 +1,16 @@
+<ul>
+  {% if include.limit %}
+    {% for post in site.posts limit:include.limit %}
+      {% include post-item.html %}
+    {% endfor %}
+  {% else %}
+    {% for post in site.posts %}
+      {% include post-item.html %}
+    {% endfor %}
+  {% endif %}
+</ul>
+{% if site.posts.size > include.limit %}
+<p>
+  <a href="/posts.html">Consulter les archives.</a>
+</p>
+{% endif %}

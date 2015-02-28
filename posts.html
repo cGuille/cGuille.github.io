@@ -4,13 +4,4 @@ title: Liste complète des publications
 ---
 
 <h1>Liste complète des publications :</h1>
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url }}" title="{{ post.title }}">
-        {{ post.title }}, le {{ post.date | date: "%d/%m/%Y" }} :
-      </a>
-      {{ post.excerpt }}
-    </li>
-  {% endfor %}
-</ul>    
+{% include posts-list.html %}

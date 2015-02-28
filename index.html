@@ -3,22 +3,8 @@ layout: default
 title: le manuel d&#39;un programmeur by cGuille
 ---
 
-<h1>Dernières publications :</h1>{% assign posts_on_homepage = 5 %}
-<ul>
-  {% for post in site.posts limit:posts_on_homepage %}
-    <li>
-      <a href="{{ post.url }}" title="{{ post.title }}">
-        {{ post.title }}, le {{ post.date | date: "%d/%m/%Y" }} :
-      </a>
-      {{ post.excerpt }}
-    </li>
-  {% endfor %}
-</ul>
-{% if site.posts.size > posts_on_homepage %}
-<p>
-  <a href="/posts.html">Voir tous les posts</a>
-</p>
-{% endif %}
+<h1>Dernières publications :</h1>
+{% include posts-list.html limit=5 %}
 
 <h1>Qui suis-je ?</h1>
 <p>
