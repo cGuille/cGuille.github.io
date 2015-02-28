@@ -238,3 +238,10 @@ hr {
 .cf {
   zoom:1;
 }
+
+footer {
+  border-top: 1px dotted #666;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 17px;
+}
