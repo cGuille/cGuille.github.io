@@ -4,9 +4,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/prism.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css" media="screen">
 
     <title>man cguille — {{ page.title }}</title>
   </head>
@@ -14,8 +14,10 @@
   <body>
     <header>
       <div class="container">
-        <h1>man cguille</h1>
-        <h2>le manuel d&#39;un programmeur</h2>
+        <a href="/">
+          <h1>man cguille</h1>
+          <h2>le manuel d&#39;un programmeur</h2>
+        </a>
       </div>
     </header>
 
@@ -24,5 +26,6 @@
 {{ content }}
       </section>
     </div>
+    <script src="/javascripts/prism.js"></script>
   </body>
 </html>
