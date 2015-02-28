@@ -239,6 +239,19 @@ hr {
   zoom:1;
 }
 
+figure * {
+  display: block;
+  margin: auto
+}
+
+figure img {
+  box-shadow: 0 0 5px 2px #63c0f5;
+}
+
+figcaption {
+  text-align: center;
+}
+
 footer {
   border-top: 1px dotted #666;
   padding-top: 10px;
