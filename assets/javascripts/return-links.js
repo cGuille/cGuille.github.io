@@ -1,7 +1,7 @@
 window.document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
-  if (!window.history) {
+  if (!window.history || !document.referrer) {
     return;
   }
   document.querySelectorAll('a.return-link')
