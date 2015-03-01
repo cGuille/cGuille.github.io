@@ -97,6 +97,11 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 42px;
 }
 
+#main_content h1 .date {
+  color: #666;
+  font-size: 19px;
+}
+
 #main_content h2 {
   font-size: 38px;
 }
