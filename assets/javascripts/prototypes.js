@@ -8,9 +8,14 @@
     HTMLCollection.prototype.toArray = toArray;
   }
   if (!String.prototype.contains) {
-    String.prototype.contains = function String_contains(searchString) {
-      return this.indexOf(searchString) !== -1;
-    };
+    String.prototype.contains = contains;
+  }
+  if (!Array.prototype.contains) {
+    Array.prototype.contains = contains;
+  }
+
+  function contains(search) {
+    return this.indexOf(search) !== -1;
   }
 
   function toArray() {
