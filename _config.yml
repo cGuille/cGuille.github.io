@@ -1,3 +1,4 @@
+url: 'https://man.cguille.net'
 exclude:
   - Gemfile
   - Gemfile.lock
