@@ -11,5 +11,9 @@ layout: default
 {{ content }}
   </div>
 </article>
-<p><a href="/" class="return-link">← Retour</a></p>
+<p>
+  <a href="/" class="return-link">← Retour</a>
+  |
+  <a href="https://twitter.com/intent/tweet?text={{ page.title | truncate: 100,'…' | uri_escape }}&via=cGuille&url={{ site.url | append: page.url | uri_escape }}" target="_blank">Partager cet article sur Twitter</a>
+</p>
 <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
