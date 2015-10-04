@@ -249,10 +249,6 @@ figure * {
   margin: auto
 }
 
-figure img {
-  box-shadow: 0 0 5px 2px #63c0f5;
-}
-
 figcaption {
   text-align: center;
 }
