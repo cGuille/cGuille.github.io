@@ -198,7 +198,7 @@ Prefixer.prototype._transform = function Prefixer__transform(chunk, encoding, ca
 };
 </code></pre>
 
-<p>Tout ce qu'il lui manque, c'est d'hériter du prototype de <code class="language-javascript">TransformStream</code>. Il faut donc que l'on définisse le prototype de <code class="language-javascript">TransformStream</code> comme étant un objet qui hérite du prototype de <code class="language-javascript">TransformStream</code>&nbsp;; on ne veut pas donner ce dernier directement, sinon en modifiant le prototype de notre constructeur on modifiera également celui de <code class="language-javascript">TransformStream</code>.</p>
+<p>Tout ce qu'il lui manque, c'est d'hériter du prototype de <code class="language-javascript">TransformStream</code>. Il faut donc que l'on définisse le prototype de <code class="language-javascript">Prefixer</code> comme étant un objet qui hérite du prototype de <code class="language-javascript">TransformStream</code>&nbsp;; on ne veut pas donner ce dernier directement, sinon en modifiant le prototype de notre constructeur on modifiera également celui de <code class="language-javascript">TransformStream</code>.</p>
 <p>Voici une implémentation possible&nbsp;:</p>
 
 <pre><code class="language-javascript">
