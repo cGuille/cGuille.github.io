@@ -1,0 +1,169 @@
+---
+layout: post
+title: Les objets en JavaScript
+---
+
+<h4>Prototypes, héritage et constructeurs</h4>
+
+<p>
+    Bonjour ! Ces temps-ci, j'ai lu pas mal de ressources et fait pas mal d'essais sur les objets en JS, sur leurs prototypes et ce qu'il se passe quand on utilise un constructeur.<br />
+    Ça ne fait pas de mal de mettre les choses au clair ; si ça vous intéresse, bonne lecture !
+</p>
+
+<h2>Qu'est-ce qu'un objet en JavaScript ?</h2>
+
+<p>Les objets JS sont des ensembles de couples clé-valeur appelés propriétés.</p>
+<p>Pouvez-vous dire quelles valeurs JavaScript sont des objets parmi celles-ci&nbsp;?</p>
+
+<ul>
+    <li>
+        <code class="language-javascript">{}</code>&nbsp;:
+        <span class="click-to-reveal">
+            oui, <code class="language-javascript">typeof({})</code> vaut <code class="language-javascript">'object'</code>.
+        </span>
+    </li>
+    <li>
+        <code class="language-javascript">[]</code>&nbsp;:
+        <span class="click-to-reveal">
+            oui, <code class="language-javascript">typeof([])</code> vaut <code class="language-javascript">'object'</code>.
+        </span>
+    </li>
+    <li>
+        <code class="language-javascript">'foo'</code>&nbsp;:
+        <span class="click-to-reveal">
+            non&nbsp;: <code class="language-javascript">typeof('foo')</code> vaut <code class="language-javascript">'string'</code> et <code class="language-javascript">'foo' instanceof Object</code> vaut <code class="language-javascript">false</code>.<br />
+            Toutefois, JavaScript dispose bien d'objets pour les chaînes de caractères avec le constructeur <code class="language-javascript">String</code>&nbsp;: <code class="language-javascript">typeof(new String('foo'))</code> vaut <code class="language-javascript">'object'</code>. On distingue bien ici le <em>type</em> du <em>constructeur</em>.
+        </span>
+    </li>
+</ul>
+
+<h2>Héritage et chaîne de prototypes</h2>
+
+<p>
+    Les objets peuvent disposer d'un lien vers un <strong>prototype</strong>.<br />
+    Les prototypes étant eux-même des objets, cela constitue une chaîne d'objets reliés par les prototypes.
+</p>
+
+<p>Lorsqu'on tente d'accéder à une propriété que l'objet ne possède pas, la chaîne de prototypes est parcourue objet par objet, jusqu'à trouver la propriété. Elle est alors utilisée <em>sur l'objet de départ</em>.</p>
+
+<figure>
+    <figcaption>Un objet disposant d'une chaine de prototypes constituée de deux objets&nbsp;:</figcaption>
+    <img src="/assets/images/proto-chain.png" alt="o → po → ppo ; o - foo: 1 ; po - foo: 2, bar: 2 ; ppo - baz: 3" />
+</figure>
+
+<p>Pouvez vous dire ce que renverront les accès aux propriétés suivants&nbsp;?</p>
+
+<pre><code class="language-javascript">
+o.foo;
+</code></pre>
+
+<p class="click-to-reveal">
+    On cherche une propriété nommée <code class="language-javascript">'foo'</code> dans l'ensemble des propriété de <code class="language-javascript">o</code>. On la trouve&nbsp;: on renvoie donc sa valeur&nbsp;:&nbsp;<code class="language-javascript">1</code>.<br />
+    À noter que la propriété <code class="language-javascript">foo</code> de l'objet <code class="language-javascript">po</code> (prototype de <code class="language-javascript">o</code>) n'est pas utilisée, car on a trouvé une propriété plus tôt dans la chaîne de prototype.
+</p>
+<hr />
+
+<pre><code class="language-javascript">
+o.bar;
+</code></pre>
+
+<p class="click-to-reveal">
+    On cherche une propriété nommée <code class="language-javascript">'bar'</code> dans l'ensemble des propriété de <code class="language-javascript">o</code>. On ne la trouve pas.<br />
+    On considère ensuite <code class="language-javascript">po</code>, le prototype de <code class="language-javascript">o</code>&nbsp;: on y trouve la propriété recherchée qui nous permet de renvoyer&nbsp;<code class="language-javascript">2</code>.
+</p>
+<hr />
+
+<pre><code class="language-javascript">
+o.baz;
+</code></pre>
+
+<p class="click-to-reveal">
+    On cherche une propriété nommée <code class="language-javascript">'baz'</code> dans l'ensemble des propriété de <code class="language-javascript">o</code>. On ne la trouve pas.<br />
+    Comme précédemment, on remonte dans la chaîne de prototype jusqu'à trouver un prototype qui contient la propriété recherchée.<br />
+    On finit par arriver à <code class="language-javascript">po</code> ce qui nous permet de renvoyer la valeur&nbsp;<code class="language-javascript">3</code>.
+</p>
+<hr />
+
+
+<p>Nous venons de constater comment fonctionne l'héritage en JavaScript. Un objet hérite d'un autre <i>via</i> son prototype, qui lui permet de faire comme si il disposait lui-même des propriétés de son parent.</p>
+<p>Pour créer un objet héritant d'un objet <code class="language-javascript">obj</code>, il faut donc créer un objet dont le prototype est <code class="language-javascript">obj</code>. Il existe une fonction pour cela&nbsp;: <code class="language-javascript">Object.create</code> (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">doc</a>). Voici un exemple montrant l'héritage d'objet avec cette fonction&nbsp;:</p>
+
+<pre><code class="language-javascript">
+var inheritedObject = {
+    foo: 'bar',
+    baz: function () { return this.foo; }
+};
+
+var o = Object.create(inheritedObject);
+
+// o n'a pas de clé dans ses propres propriétés :
+Object.keys(o); // []
+
+// Mais on peut accéder aux propriétés de son prototype :
+o.foo; // 'bar'
+o.baz(); // 'bar'
+
+// On peut définir la propriété 'foo' sur l'objet o :
+o.foo = 2;
+
+// La fonction de inheritedObject renvoie maintenant 2, car elle est appelée
+// sur o dont la propriété 'foo' vaut 2.
+o.baz(); // 2
+
+// On supprime la propriété 'foo' de l'objet o :
+delete o.foo;
+
+// On constate qu'on accède de nouveau à 'bar' : la propriété 'foo' de o
+// n'existant plus, on se rabat à nouveau sur celle de son prototype.
+o.foo; // 'bar'
+o.baz(); // 'bar'
+
+// On change la valeur de la propriété 'foo' dans le prototype :
+inheritedObject.foo = 42;
+o.baz(); // 42
+</code></pre>
+
+<h2>Les constructeurs</h2>
+
+<p>Les constructeurs sont des fonctions. La seule différence avec une fonction non-constructeur, c'est qu'un constructeur est une fonction qui a été appelée <i>via</i> l'opérateur <code class="language-javascript">new</code>.
+
+<p>Lorsqu'une fonction est appelée avec <code class="language-javascript">new</code>&nbsp;:</p>
+<ul>
+    <li>Un objet est créé.</li>
+    <li>La propriété <code class="language-javascript">constructor</code> de l'objet créé référence le constructeur utilisé.</li>
+    <li>Le prototype de cet objet est défini comme étant le prototype du constructeur (accessible par la propriété <code class="language-javascript">__proto__</code>.</li>
+    <li>Le constructeur est exécuté avec le nouvel objet pour contexte, c'est-à-dire que <code class="language-javascript">this</code> référence l'objet créé.</li>
+</ul>
+
+<p>Cela signifie que <code class="language-javascript">var o = new Ctor()</code> correspond <em>à peu près</em> à ceci&nbsp;:</p>
+
+<pre><code class="language-javascript">
+var o = Object.create(Ctor.prototype, {
+    constructor: { value: Ctor, writable: true, enumerable: false, configurable: false },
+    __proto__: { value: Ctor.prototype, writable: true, enumerable: false, configurable: false },
+});
+Ctor.call(this);
+</code></pre>
+
+<p>Voici donc une implémentation approximative de l'opérateur <code class="language-javascript">new</code>&nbsp;:</p>
+
+<pre><code class="language-javascript">
+function construct() {
+    var ctor = [].shift.call(arguments);
+    var instance = Object.create(ctor.prototype, {
+        constructor: { value: ctor, writable: true, enumerable: false, configurable: false },
+        __proto__: { value: ctor.prototype, writable: true, enumerable: false, configurable: false },
+    });
+    ctor.apply(instance, arguments);
+    return instance;
+}
+
+// Exemple :
+function Foo(bar) {
+    this.bar = bar;
+}
+
+var o = construct(Foo, 'bar'); // ~= var o = new Foo('bar');
+</code></pre>
+
+<p>Les constructeurs sont donc un moyen simple de définir comment initialiser des objets partageant un même prototype&nbsp;: il suffit d'écrire une fonction réalisant l'initialisaton et disposant du prototype à partager, puis d'utiliser l'opérateur <code class="language-javascript">new</code> pour construire des objets avec.</p>
