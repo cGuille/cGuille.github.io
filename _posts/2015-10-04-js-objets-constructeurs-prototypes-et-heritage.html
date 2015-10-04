@@ -167,3 +167,87 @@ var o = construct(Foo, 'bar'); // ~= var o = new Foo('bar');
 </code></pre>
 
 <p>Les constructeurs sont donc un moyen simple de définir comment initialiser des objets partageant un même prototype&nbsp;: il suffit d'écrire une fonction réalisant l'initialisaton et disposant du prototype à partager, puis d'utiliser l'opérateur <code class="language-javascript">new</code> pour construire des objets avec.</p>
+
+<h2>Héritage de constructeurs</h2>
+
+<p>Du coup, on aimerait bien avoir un constructeur qui hérite d'un autre. Par exemple, je souhaite créer un constructeur pour fabriquer des objets qui préfixent toutes les lignes d'un flux de texte par une chaîne de caractères.</p>
+<p>Ça tombe bien, NodeJS propose des constructeurs pour fabriquer des <i>stream</i>. Idéalement, il faudrait que j'étende le comportement d'un flux, car je souhaite obtenir un constructeur de flux qui fait quelque chose de spécifique.</p>
+<p>Le but du jeu est donc de créer un constructeur <code class="language-javascript">Prefixer(prefixFn)</code> qui permette de préfixer toutes les lignes d'un flux de texte avec la chaîne retournée par la fonction fournie. Je veux pouvoir l'utiliser de la façon suivante&nbsp;:</p>
+<pre><code class="language-javascript">
+// Création d'un flux lisant le fichier dont on passe le chemin en paramètre :
+var filePath = process.argv.slice(2).join(' ');
+var fileStream = fs.createReadStream(filePath);
+
+// Construction d'un préfixeur qui ajoute la date au début de toutes les lignes :
+var prefixer = new Prefixer(function () { return new Date() + ': '; });
+
+// On envoie le contenu du fichier dans notre préfixeur, qui envoie le résultat sur la sortie standard :
+fileStream.pipe(prefixer).pipe(process.stdout);
+</code></pre>
+
+<p>Voici une implémentation du constructeur <code class="language-javascript">Prefixer</code>&nbsp;:</p>
+
+<pre><code class="language-javascript">
+function Prefixer(prefixFn) {
+    this.prefixFn = prefixFn;
+}
+
+Prefixer.prototype._transform = function Prefixer__transform(chunk, encoding, callback) {
+    var chunkString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+    callback(null, chunkString.replace(/^/gm, this.prefixFn()));
+};
+</code></pre>
+
+<p>Tout ce qu'il lui manque, c'est d'hériter du prototype de <code class="language-javascript">TransformStream</code>. Il faut donc que l'on définisse le prototype de <code class="language-javascript">TransformStream</code> comme étant un objet qui hérite du prototype de <code class="language-javascript">TransformStream</code>&nbsp;; on ne veut pas donner ce dernier directement, sinon en modifiant le prototype de notre constructeur on modifiera également celui de <code class="language-javascript">TransformStream</code>.</p>
+<p>Voici une implémentation possible&nbsp;:</p>
+
+<pre><code class="language-javascript">
+var TransformStream = require('stream').Transform;
+
+function Prefixer(prefixFn) {
+    this.constructor.super_.call(this);
+    this.prefixFn = prefixFn;
+}
+Prefixer.super_ = TransformStream;
+Prefixer.prototype = Object.create(TransformStream.prototype, {
+    constructor: { value: Prefixer, writable: true, enumerable: false, configurable: false }
+});
+
+Prefixer.prototype._transform = function Prefixer__transform(chunk, encoding, callback) {
+    var chunkString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+    callback(null, chunkString.replace(/^/gm, this.prefixFn()));
+};
+</code></pre>
+
+<p>Et voilà, désormais on peut accéder aux méthodes des flux de transformations natifs de NodeJS (ici on appelle <code class="language-javascript">pipe()</code>) sur les objets que notre nouveau constructeur fabriquera&nbsp;!</p>
+
+<p>Maintenant qu'on a compris, on peut directement utiliser la méthode utilitaire d'héritage fournie par NodeJS&nbsp;; voici ce que donne le script à la fin&nbsp;:</p>
+
+<pre><code class="language-javascript">
+var fs = require('fs');
+var inherits = require('util').inherits;
+var TransformStream = require('stream').Transform;
+
+function Prefixer(prefixFn) {
+    this.constructor.super_.call(this);
+    this.prefixFn = prefixFn;
+}
+inherits(Prefixer, TransformStream);
+
+Prefixer.prototype._transform = function Prefixer__transform(chunk, encoding, callback) {
+    var chunkString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+    callback(null, chunkString.replace(/^/gm, this.prefixFn()));
+};
+
+
+// On peut appeler le script en ligne de commande,
+// en passant en paramètre le chemin du fichier à lire.
+var filePath = process.argv.slice(2).join(' ');
+var fileStream = fs.createReadStream(filePath);
+
+var prefixer = new Prefixer(function () {
+    return new Date() + ': ';
+});
+
+fileStream.pipe(prefixer).pipe(process.stdout);
+</code></pre>
