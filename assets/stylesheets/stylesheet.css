@@ -262,6 +262,7 @@ figcaption {
   font-weight: bold;
   padding: 10px 15px;
   text-decoration: none;
+  margin: 2px;
 }
 
 .reveal-btn:hover {
