@@ -6,8 +6,15 @@ html {
 
 body {
   margin: 0;
-  padding: 0;
   font-size: 1.2em;
+  font-family: Tahoma, Geneva, Kalimati, sans-serif;
+}
+
+a {
+  color: #2980b9;
+}
+a:hover {
+  color: #3a9bdc;
 }
 
 #main-header a {
@@ -29,6 +36,10 @@ body {
   font-size: 1.7em;
 }
 
+#page-content, #post {
+  padding: 0.3em 2em;
+}
+
 h1, h2, h3, h4, h5, h6 {
 }
 
@@ -37,5 +48,8 @@ pre[class*='language-'] > code[data-language] {
 }
 
 footer {
+  margin: 0 1em;
+  padding-top: 0.3em;
+  border-top: 0.2em solid #2980b9;
   text-align: center;
 }
