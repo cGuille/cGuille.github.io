@@ -3,16 +3,16 @@ layout: default
 ---
 
 <article class="post">
-  <h1>
-    {{ page.title }}
-    <span class="date">publié le {{ page.date | date: "%d/%m/%Y" }}</span>
-  </h1>
-  {% if page.subtitle %}
-  <h4>{{ page.subtitle }}</h4>
-  {% endif %}
+  <header>
+    <h1>{{ page.title }}</h1>
+    {% if page.subtitle %}
+    <h2>{{ page.subtitle }}</h2>
+    {% endif %}
+    <aside>Publié le {{ page.date | date: "%d/%m/%Y" }}.</aside>
+  </header>
   <div class="post-content">
 {{ content }}
   </div>
 </article>
-<p><a href="/" class="return-link">← Retour</a></p>
+<aside><a href="/" class="return-link">← Retour</a></aside>
 <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>

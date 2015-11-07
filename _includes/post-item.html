@@ -1,10 +1,9 @@
-<li>
+<li class="posts-list-item">
   <a href="{{ post.url }}" title="{{ post.title }}">
-    {{ post.title }}, publié le {{ post.date | date: "%d/%m/%Y" }} :
+    <h4>{{ post.title }}</h4>
+    {% if post.subtitle %}
+    <h5>{{ post.subtitle }}</h5>
+    {% endif %}
+    <aside>Publié le {{ post.date | date: "%d/%m/%Y" }}.</aside>
   </a>
-  {% if post.subtitle %}
-  <h4>{{ post.subtitle }}</h4>
-  {% else %}
-  {{ post.excerpt }}
-  {% endif %}
 </li>
