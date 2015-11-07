@@ -2,5 +2,9 @@
   <a href="{{ post.url }}" title="{{ post.title }}">
     {{ post.title }}, publié le {{ post.date | date: "%d/%m/%Y" }} :
   </a>
+  {% if post.subtitle %}
+  <h4>{{ post.subtitle }}</h4>
+  {% else %}
   {{ post.excerpt }}
+  {% endif %}
 </li>
