@@ -48,6 +48,32 @@ a:hover {
   padding: 0.3em 2em;
 }
 
+.posts-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+.posts-list-item > a {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  border-left: 0.75em solid #2980b9;
+  padding: 0.3em 0.5em;
+  margin-bottom: 0.2em;
+  font-size: 1.5em;
+  color: #3a3a3a;
+  text-decoration: none;
+}
+.posts-list-item > a:hover {
+  /*color: #27ae60;*/
+  border-color: #27ae60;
+}
+.posts-list-item h4, .posts-list-item h5 {
+  margin: 0 0 0.3em 0;
+}
+.posts-list-item aside {
+  font-size: 0.6em;
+}
+
 pre[class*='language-'] > code[data-language] {
   overflow: auto;
 }
