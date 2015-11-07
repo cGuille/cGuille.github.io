@@ -9,7 +9,7 @@ body {
   margin: 0;
   font-size: 1.2em;
   font-family: Tahoma, Geneva, Kalimati, sans-serif;
-  color: #3a3a3a;
+  color: rgb(58, 58, 58);
 }
 
 h1 {
@@ -20,7 +20,7 @@ h2 {
 }
 
 a {
-  color: #2980b9;
+  color: rgb(41, 128, 185);
 }
 a:hover {
   color: #3a9bdc;
@@ -36,11 +36,10 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 0.7em solid #2980b9;
+  border-bottom: 0.7em solid rgb(41, 128, 185);
   padding: 0.3em 5em;
-
   font-family: Tahoma, Geneva, Kalimati, sans-serif;
-  color: #2980b9;
+  color: rgb(41, 128, 185);
   text-decoration: none;
 }
 #main-header a :first-child {
@@ -61,15 +60,15 @@ a:hover {
 }
 .posts-list-item > a {
   display: block;
-  border-left: 0.75em solid #2980b9;
+  border-left: 0.75em solid rgb(41, 128, 185);
   padding: 0.3em 0.5em;
   margin-bottom: 0.2em;
   font-size: 1.5em;
-  color: #3a3a3a;
+  color: rgb(58, 58, 58);
   text-decoration: none;
 }
 .posts-list-item > a:hover {
-  border-color: #27ae60;
+  border-color: rgb(39, 174, 96);
 }
 .posts-list-item h4, .posts-list-item h5 {
   margin: 0 0 0.3em 0;
@@ -81,7 +80,7 @@ a:hover {
 #post header {
   margin: 0.5em 0;
   padding: 0.5em;
-  border-left: 0.75em solid #2980b9;
+  border-left: 0.75em solid rgb(41, 128, 185);
   font-size: 1.2em;
 }
 #post header > * {
@@ -115,6 +114,6 @@ pre[class*='language-'] > code[data-language] {
 footer {
   margin: 0 1em;
   padding-top: 0.3em;
-  border-top: 0.2em solid #2980b9;
+  border-top: 0.2em solid rgb(41, 128, 185);
   text-align: center;
 }
