@@ -111,6 +111,19 @@ blockquote cite {
   font-style: italic;
 }
 
+button {
+  padding: 0.2em;
+  margin: 0.1em 0.05em;
+  border: none;
+  font-size: 1em;
+  color: white;
+  background-color: rgb(41, 128, 185);
+  cursor: pointer;
+}
+button:hover {
+  background-color: rgb(39, 174, 96);
+}
+
 pre[class*='language-'] > code[data-language] {
   overflow: auto;
 }
