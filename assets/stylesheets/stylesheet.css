@@ -61,6 +61,7 @@ a:hover {
 .posts-list-item > a {
   display: block;
   border-left: 0.75em solid rgb(41, 128, 185);
+  background-color: rgba(41, 128, 185, 0.15);
   padding: 0.3em 0.5em;
   margin-bottom: 0.2em;
   font-size: 1.5em;
@@ -69,6 +70,7 @@ a:hover {
 }
 .posts-list-item > a:hover {
   border-color: rgb(39, 174, 96);
+  background-color: rgba(39, 174, 96, 0.15);
 }
 .posts-list-item h4, .posts-list-item h5 {
   margin: 0 0 0.3em 0;
@@ -81,6 +83,7 @@ a:hover {
   margin: 0.5em 0;
   padding: 0.5em;
   border-left: 0.75em solid rgb(41, 128, 185);
+  background-color: rgba(41, 128, 185, 0.15);
   font-size: 1.2em;
 }
 #post header > * {
