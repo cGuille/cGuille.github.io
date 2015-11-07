@@ -11,6 +11,13 @@ body {
   color: #3a3a3a;
 }
 
+h1 {
+  font-size: 2em;
+}
+h2 {
+  font-size: 1.7em;
+}
+
 a {
   color: #2980b9;
 }
