@@ -3,3 +3,8 @@
   {% include post-item.html %}
 {% endfor %}
 </ul>
+{% if include.max and site.posts.size > include.max %}
+<p>
+  <a href="/posts.html">Consulter les archives.</a>
+</p>
+{% endif %}
