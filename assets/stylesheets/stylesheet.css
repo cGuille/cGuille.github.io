@@ -93,15 +93,14 @@ a:hover {
 }
 
 blockquote {
-  background-color: #ecf0f1;
+  background-color: rgb(240, 240, 240);
   margin: 0;
   padding: 0.7em;
 }
-
 blockquote p {
   margin: 0;
   padding: 0.75em 0;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgba(58, 58, 58, 0.1);
 }
 blockquote p:last-of-type {
   border-bottom: none;
@@ -110,6 +109,7 @@ blockquote cite {
   display: block;
   text-align: right;
   font-style: italic;
+  font-size: 0.9em;
 }
 
 button {
