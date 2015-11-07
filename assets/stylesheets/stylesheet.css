@@ -129,6 +129,10 @@ pre[class*='language-'] > code[data-language] {
   overflow: auto;
 }
 
+.click-to-reveal.hidden {
+  display: none;
+}
+
 footer {
   margin: 0 1em;
   padding-top: 0.3em;

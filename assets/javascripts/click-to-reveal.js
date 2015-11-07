@@ -6,10 +6,10 @@ window.document.addEventListener('DOMContentLoaded', function clickToReveal() {
     revealButton.classList.add('reveal-btn');
 
     document.querySelectorAll('.click-to-reveal').toArray().forEach(function (revealableElt) {
-        revealableElt.style.visibility = 'hidden';
+        revealableElt.classList.add('hidden');
         var btn = revealButton.cloneNode(true);
         btn.addEventListener('click', function () {
-            revealableElt.style.visibility = 'visible';
+            revealableElt.classList.remove('hidden');
             btn.parentElement.removeChild(btn);
         });
 
