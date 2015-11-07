@@ -62,7 +62,6 @@ a:hover {
   text-decoration: none;
 }
 .posts-list-item > a:hover {
-  /*color: #27ae60;*/
   border-color: #27ae60;
 }
 .posts-list-item h4, .posts-list-item h5 {
