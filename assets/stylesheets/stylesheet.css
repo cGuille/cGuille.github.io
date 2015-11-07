@@ -77,6 +77,16 @@ a:hover {
   font-size: 0.6em;
 }
 
+#post header {
+  margin: 0.5em 0;
+  padding: 0.5em;
+  border-left: 0.75em solid #2980b9;
+  font-size: 1.2em;
+}
+#post header > * {
+  margin: 0.15em 0;
+}
+
 pre[class*='language-'] > code[data-language] {
   overflow: auto;
 }
