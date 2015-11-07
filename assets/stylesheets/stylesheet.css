@@ -125,10 +125,6 @@ button:hover {
   background-color: rgb(39, 174, 96);
 }
 
-pre[class*='language-'] > code[data-language] {
-  overflow: auto;
-}
-
 .click-to-reveal.hidden {
   display: none;
 }
