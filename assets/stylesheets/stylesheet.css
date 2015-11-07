@@ -24,6 +24,12 @@ a {
 a:hover {
   color: #3a9bdc;
 }
+.return-link {
+  text-decoration: none;
+}
+.return-link:before {
+  content: '← ';
+}
 
 #main-header a {
   display: flex;
