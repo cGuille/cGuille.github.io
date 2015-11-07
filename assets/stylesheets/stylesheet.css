@@ -36,18 +36,18 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 0.7em solid rgb(41, 128, 185);
+  border-bottom: 0.3em solid rgb(41, 128, 185);
   padding: 0.3em 5em;
   font-family: Tahoma, Geneva, Kalimati, sans-serif;
   color: rgb(41, 128, 185);
   text-decoration: none;
 }
 #main-header a :first-child {
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
 }
 #main-header a :last-child {
-  font-size: 1.7em;
+  font-size: 1.3em;
 }
 
 #page-content, #post {
