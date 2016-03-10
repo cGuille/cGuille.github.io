@@ -8,7 +8,13 @@ layout: default
     {% if page.subtitle %}
     <h3>{{ page.subtitle }}</h3>
     {% endif %}
-    <aside>Publié le {{ page.date | date: "%d/%m/%Y" }}.</aside>
+    <aside>
+      Publié le {{ page.date | date: "%d/%m/%Y" }}.
+      —
+      <a href="https://twitter.com/intent/tweet?text={{ page.title | truncate: 100,'…' | uri_escape }}&amp;via=cGuille&amp;url={{ site.url | append: page.url | uri_escape }}" target="_blank">
+        Partager sur Twitter.
+      </a>
+    </aside>
   </header>
   <div class="post-content">
 {{ content }}
