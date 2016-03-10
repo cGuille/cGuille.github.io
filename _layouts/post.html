@@ -2,18 +2,25 @@
 layout: default
 ---
 
-<article class="post">
-  <h1>
-    {{ page.title }}
-    <span class="date">publié le {{ page.date | date: "%d/%m/%Y" }}</span>
-  </h1>
+<article id="post">
+  <header>
+    <h1>{{ page.title }}</h1>
+    {% if page.subtitle %}
+    <h3>{{ page.subtitle }}</h3>
+    {% endif %}
+    <aside>
+      Publié le {{ page.date | date: "%d/%m/%Y" }}.
+      —
+      <a href="https://twitter.com/intent/tweet?text={{ page.title | truncate: 100,'…' | uri_escape }}&amp;via=cGuille&amp;url={{ site.url | append: page.url | uri_escape }}" target="_blank">
+        Partager sur Twitter.
+      </a>
+    </aside>
+  </header>
   <div class="post-content">
 {{ content }}
   </div>
+  <aside>
+    <p><a href="/" class="return-link">Retour</a></p>
+  </aside>
+  <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
 </article>
-<p>
-  <a href="/" class="return-link">← Retour</a>
-  |
-  <a href="https://twitter.com/intent/tweet?text={{ page.title | truncate: 100,'…' | uri_escape }}&via=cGuille&url={{ site.url | append: page.url | uri_escape }}" target="_blank">Partager cet article sur Twitter</a>
-</p>
-<footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>

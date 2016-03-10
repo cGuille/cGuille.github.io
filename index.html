@@ -1,20 +1,23 @@
 ---
-layout: default
-title: le manuel d&#39;un programmeur
+layout: page
 ---
 
-<h1>Dernières publications :</h1>
-{% include posts-list.html limit=5 %}
+<section>
+  <h2>Dernières publications</h2>
+  {% include posts-list.html max=5 %}
+</section>
 
-<h1>Qui suis-je ?</h1>
-<p>
-  Je suis Guillaume Charmetant, je programme chez <a href="https://twitter.com/TEA_ebook">TEA, The Ebook Alternative</a>.<br />
-  Vous pouvez me retrouver sur :
-</p>
-<ul>
-  <li>Twitter : <a href="https://twitter.com/cGuille">@cGuille</a> ;</li>
-  <li>GitHub : <a href="https://github.com/cGuille">cGuille</a>.</li>
-</ul>
-<p>Bonne lecture !</p>
+<section>
+  <h2>Qui suis-je ?</h2>
+  <p>
+    Je suis Guillaume Charmetant, je programme chez <a href="https://twitter.com/TEA_ebook">TEA, The Ebook Alternative</a>.<br />
+    Vous pouvez me retrouver sur :
+  </p>
+  <ul>
+    <li>Twitter : <a href="https://twitter.com/cGuille">@cGuille</a> ;</li>
+    <li>GitHub : <a href="https://github.com/cGuille">cGuille</a>.</li>
+  </ul>
+  <p>Bonne lecture !</p>
+</section>
 
 <footer><a href="/credits.html">Crédits</a></footer>
