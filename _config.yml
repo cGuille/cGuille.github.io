@@ -2,3 +2,4 @@ url: http://man.cguille.net
 exclude:
   - Gemfile
   - Gemfile.lock
+  - CNAME
