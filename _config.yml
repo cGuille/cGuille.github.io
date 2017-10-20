@@ -1,4 +1,7 @@
 url: http://man.cguille.net
+title: man cguille
+subtitle: manuel d'un programmeur
+
 exclude:
   - Gemfile
   - Gemfile.lock
