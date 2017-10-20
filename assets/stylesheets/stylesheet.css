@@ -1,4 +1,12 @@
 html {
+  --main-color: rgb(41, 128, 185);
+  --main-variant-color: rgba(41, 128, 185, 0.15);
+  --text-color: rgb(58, 58, 58);
+  --accent-color: rgb(39, 174, 96);
+  --accent-variant-color: rgba(39, 174, 96, 0.15);
+}
+
+html {
   margin: 0;
   padding: 0;
   font-size: 100%;
@@ -9,7 +17,7 @@ body {
   margin: 0;
   font-size: 1em;
   font-family: Tahoma, Geneva, Kalimati, sans-serif;
-  color: rgb(58, 58, 58);
+  color: var(--text-color);
   line-height: 1.6em;
 }
 
@@ -22,7 +30,7 @@ h2 {
 }
 
 a {
-  color: rgb(41, 128, 185);
+  color: var(--main-color);
 }
 a:hover {
   color: #3a9bdc;
@@ -38,10 +46,10 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 0.3em solid rgb(41, 128, 185);
+  border-bottom: 0.3em solid var(--main-color);
   padding: 0.4em 5em;
   font-family: Tahoma, Geneva, Kalimati, sans-serif;
-  color: rgb(41, 128, 185);
+  color: var(--main-color);
   text-decoration: none;
 }
 #main-header a :first-child {
@@ -62,17 +70,17 @@ a:hover {
 }
 .posts-list-item > a {
   display: block;
-  border-left: 0.75em solid rgb(41, 128, 185);
-  background-color: rgba(41, 128, 185, 0.15);
+  border-left: 0.75em solid var(--main-color);
+  background-color: var(--main-variant-color);
   padding: 0.3em 0.5em;
   margin-bottom: 0.3em;
   font-size: 1.5em;
-  color: rgb(58, 58, 58);
+  color: var(--text-color);
   text-decoration: none;
 }
 .posts-list-item > a:hover {
-  border-color: rgb(39, 174, 96);
-  background-color: rgba(39, 174, 96, 0.15);
+  border-color: var(--accent-color);
+  background-color: var(--accent-variant-color);
 }
 .posts-list-item h4, .posts-list-item h5 {
   margin: 0 0 0.3em 0;
@@ -84,8 +92,8 @@ a:hover {
 #post header {
   margin: 0.5em 0;
   padding: 0.5em;
-  border-left: 0.75em solid rgb(41, 128, 185);
-  background-color: rgba(41, 128, 185, 0.15);
+  border-left: 0.75em solid var(--main-color);
+  background-color: var(--main-variant-color);
   font-size: 1.2em;
 }
 #post header > * {
@@ -118,11 +126,11 @@ button {
   border: none;
   font-size: 1em;
   color: white;
-  background-color: rgb(41, 128, 185);
+  background-color: var(--main-color);
   cursor: pointer;
 }
 button:hover {
-  background-color: rgb(39, 174, 96);
+  background-color: var(--accent-color);
 }
 
 .click-to-reveal.hidden {
@@ -132,6 +140,6 @@ button:hover {
 footer {
   margin: 0 1em;
   padding-top: 0.3em;
-  border-top: 0.2em solid rgb(41, 128, 185);
+  border-top: 0.2em solid var(--main-color);
   text-align: center;
 }
