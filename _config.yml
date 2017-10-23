@@ -1,6 +1,5 @@
-url: http://man.cguille.net
-title: man cguille
-subtitle: manuel d'un programmeur
+url: http://notes.cguille.net
+title: Les notes de cGuille
 
 exclude:
   - Gemfile

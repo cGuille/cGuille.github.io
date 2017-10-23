@@ -1,9 +1,13 @@
 html {
+  --logo-color: black;
   --main-color: rgb(41, 128, 185);
   --main-variant-color: rgba(41, 128, 185, 0.15);
-  --text-color: rgb(58, 58, 58);
+  --text-color: rgb(40, 40, 40);
   --accent-color: rgb(39, 174, 96);
   --accent-variant-color: rgba(39, 174, 96, 0.15);
+
+  --left-border-width: 15px;
+  --left-border-padding: 50px;
 }
 
 html {
@@ -11,6 +15,8 @@ html {
   padding: 0;
   font-size: 100%;
   background-color: white;
+  background-image: linear-gradient(90deg, var(--main-color), var(--main-color) var(--left-border-width), transparent var(--left-border-width), transparent var(--left-border-width));
+  background-repeat: no-repeat;
 }
 
 body {
@@ -18,7 +24,14 @@ body {
   font-size: 1em;
   font-family: Tahoma, Geneva, Kalimati, sans-serif;
   color: var(--text-color);
-  line-height: 1.6em;
+}
+
+#page-content > section:not(.posts-list-section) {
+  padding-left: var(--left-border-padding);
+}
+
+#page-content {
+  padding-bottom: 1em;
 }
 
 h1 {
@@ -43,72 +56,76 @@ a:hover {
 }
 
 #main-header a {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 0.3em solid var(--main-color);
-  padding: 0.4em 5em;
+  color: var(--logo-color);
+  display: flex;
   font-family: Tahoma, Geneva, Kalimati, sans-serif;
-  color: var(--main-color);
+  font-size: 5.5vw;
+  height: 100%;
+  justify-content: center;
+  padding: .2em 1em;
   text-decoration: none;
 }
-#main-header a :first-child {
-  font-size: 2em;
-  font-weight: bold;
-}
-#main-header a :last-child {
-  font-size: 1.3em;
-}
 
-#page-content, #post {
-  padding: 0.3em 2em;
+#main-header .site-logo {
+  width: 8vw;
+  margin-right: 2vw;
 }
 
 .posts-list {
   list-style-type: none;
   padding-left: 0;
+  margin: 0;
 }
 .posts-list-item > a {
+  background-image: linear-gradient(90deg, var(--accent-color), var(--accent-color) var(--left-border-width), transparent var(--left-border-width), transparent var(--left-border-width));
   display: block;
-  border-left: 0.75em solid var(--main-color);
-  background-color: var(--main-variant-color);
-  padding: 0.3em 0.5em;
-  margin-bottom: 0.3em;
-  font-size: 1.5em;
+  padding: 2em 1em;
+  padding-left: var(--left-border-padding);
   color: var(--text-color);
   text-decoration: none;
 }
 .posts-list-item > a:hover {
-  border-color: var(--accent-color);
-  background-color: var(--accent-variant-color);
+  background-image: linear-gradient(90deg, var(--accent-color), var(--accent-color) var(--left-border-width), var(--accent-variant-color) var(--left-border-width), var(--accent-variant-color) var(--left-border-width));
 }
-.posts-list-item h4, .posts-list-item h5 {
+.posts-list-item h2, .posts-list-item h3 {
   margin: 0 0 0.3em 0;
+}
+.posts-list-item h4 {
+  font-size: 1.4em;
+}
+.posts-list-item h5 {
+  font-size: 1em;
 }
 .posts-list-item aside {
   font-size: 0.6em;
 }
 
+#post > * {
+  padding: 0.3em 2em;
+}
+
 #post header {
+  background-image: linear-gradient(90deg, var(--accent-color), var(--accent-color) var(--left-border-width), transparent var(--left-border-width), transparent var(--left-border-width));
   margin: 0.5em 0;
-  padding: 0.5em;
-  border-left: 0.75em solid var(--main-color);
-  background-color: var(--main-variant-color);
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   font-size: 1.2em;
 }
+
 #post header > * {
   margin: 0.5em 0;
 }
 
 blockquote {
-  background-color: rgb(240, 240, 240);
+  background-color: var(--main-variant-color);
   margin: 0;
   padding: 0.7em;
 }
 blockquote p {
   margin: 0;
   padding: 0.75em 0;
-  border-bottom: 1px solid rgba(58, 58, 58, 0.1);
+  border-bottom: 1px solid var(--main-variant-color);
 }
 blockquote p:last-of-type {
   border-bottom: none;
