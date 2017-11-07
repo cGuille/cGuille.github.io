@@ -8,6 +8,8 @@ html {
 
   --left-border-width: 15px;
   --left-border-padding: 50px;
+
+  --table-border-color: white;
 }
 
 html {
@@ -121,6 +123,34 @@ a:hover {
 
 #post header > * {
   margin: 0.5em 0;
+}
+
+table {
+  border-collapse: collapse;
+  margin: auto;
+  width: 90vw;
+}
+
+table.bottom-caption {
+  caption-side: bottom;
+}
+
+table > caption {
+  font-style: italic;
+  margin: .2em 0;
+}
+
+table thead td {
+  background-color: var(--main-color);
+  border-bottom-width: 8px;
+  color: var(--table-border-color);
+}
+
+table td {
+  background-color: var(--main-variant-color);
+  border: 3px solid var(--table-border-color);
+  font-family: monospace;
+  padding: .5em;
 }
 
 blockquote {
