@@ -216,8 +216,18 @@ impl&lt;T, P&gt; DerefMut for Prioritized&lt;T, P&gt; {
 
 <p>
     À noter que je ne suis pas certain que cette utilisation des <i>traits</i> <span class="mono">Deref</span> et
-    <span class="mono">DerefMut</span> soient nécessairement une bonne idée. Cela permet certes de manipuler des valeurs
+    <span class="mono">DerefMut</span> soit nécessairement une bonne idée. Cela permet certes de manipuler des valeurs
     décorées un peu comme si elles ne l'étaient pas, mais parfois, l'explicite est une meilleure idée que l'implicite.
+    <br />
+    Peut-être l'opérateur de déréférencement devrait-il être réservé aux types du genre <i>smart pointers</i> comme
+    l'est le type <span class="mono">Box</span>.
+</p>
+
+<p>
+    Si on souhaite présenter une API simple tout en conservant le mécanisme de décoration, on devrait peut-être plutôt
+    encapsuler le <span class="mono">BinaryHeap</span> dans une structure dédiée, et exposer des méthodes permettant
+    d'ajouter et récupérer les données dedans. Ce serait alors le rôle de ces méthodes de gérer la décoration et
+    l'extraction des valeurs de la file (tiens, voilà une autre idée de billet de blog…).
 </p>
 
 <p>
