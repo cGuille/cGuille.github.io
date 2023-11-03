@@ -74,14 +74,14 @@ queue.push(EmailJob { kind: EmailKind::Welcome, user_id: "user#2".to_string() })
 queue.push(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() });
 
 // And then we dequeue & process every job:
-for job in queue.iter() {
+while let Some(job) = queue.pop() {
     process_email_job(&job);
 }
 </code></pre>
 
 <p>
     Sauf que ça ne suffit pas ! Si on essaie de
-    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=36c192e402c1065f7ee3eab91394da0d">faire tourner tout ça</a>,
+    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=2f131629872039096fba80502c7fccd8">faire tourner tout ça</a>,
     le compilateur nous signale que notre type <span class="mono">EmailJob</span> n'implémente pas le <i>trait</i>
     <span class="mono">std::cmp::Ord</span>. En effet, il n'est pas ordonnable sur la priorité.
 </p>
@@ -148,14 +148,14 @@ queue.push(prioritize(EmailJob { kind: EmailKind::OrderInvoice, user_id: "user#1
 queue.push(prioritize(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() }, -20));
 queue.push(prioritize(EmailJob { kind: EmailKind::Welcome, user_id: "user#2".to_string() }, 0));
 
-for prioritized_job in queue.iter() {
+while let Some(prioritized_job) = queue.pop() {
     let job = &prioritized_job.inner;
     process_email_job(job);
 }</code></pre>
 
 <p>
     Hourra,
-    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=2de905e61853e5e36e8025123f8e4e17">cela fonctionne</a> !
+    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=b912abc0bd363eb83040981bc7752ca9">cela fonctionne</a> !
     Les jobs sont bien traités dans l'ordre de leur priorité : ceux enrobés dans une priorité plus grande en premier,
     jusqu'à traiter celui à la plus faible priorité.
 </p>
@@ -204,14 +204,14 @@ impl&lt;T, P&gt; DerefMut for Prioritized&lt;T, P&gt; {
     est implicitement déréférencée.
 </p>
 
-<pre><code class="language-rust">for job in queue.iter() {
+<pre><code class="language-rust">while let Some(job) = queue.pop() {
     process_email_job(&job);
 }
 </code></pre>
 
 <p>
     Voici
-    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=21cc1004e4c40b5b077343e2622b661f">le résultat final</a>.
+    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=de5defd314e21ce28274fc89b70067a9">le résultat final</a>.
 </p>
 
 <p>
