@@ -69,9 +69,9 @@ struct EmailJob {
 
 // Let's enqueue some jobs:
 queue.push(EmailJob { kind: EmailKind::Welcome, user_id: "user#1".to_string() });
+queue.push(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() });
 queue.push(EmailJob { kind: EmailKind::OrderInvoice, user_id: "user#1".to_string() });
 queue.push(EmailJob { kind: EmailKind::Welcome, user_id: "user#2".to_string() });
-queue.push(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() });
 
 // And then we dequeue & process every job:
 while let Some(job) = queue.pop() {
@@ -143,10 +143,10 @@ impl&lt;T, P: Ord&gt; Ord for Prioritized&lt;T, P&gt; {
 
 <pre><code class="language-rust">let mut queue = BinaryHeap::new();
 
-queue.push(prioritize(EmailJob { kind: EmailKind::Welcome, user_id: "user#1".to_string() }, 50));
-queue.push(prioritize(EmailJob { kind: EmailKind::OrderInvoice, user_id: "user#1".to_string() }, 10));
-queue.push(prioritize(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() }, -20));
-queue.push(prioritize(EmailJob { kind: EmailKind::Welcome, user_id: "user#2".to_string() }, 0));
+queue.push(prioritize(EmailJob { kind: EmailKind::Welcome, user_id: "user#1".to_string() }, 1));
+queue.push(prioritize(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() }, -1));
+queue.push(prioritize(EmailJob { kind: EmailKind::OrderInvoice, user_id: "user#1".to_string() }, 0));
+queue.push(prioritize(EmailJob { kind: EmailKind::Welcome, user_id: "user#2".to_string() }, 1));
 
 while let Some(prioritized_job) = queue.pop() {
     let job = &prioritized_job.inner;
