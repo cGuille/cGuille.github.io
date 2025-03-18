@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/prism.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/stylesheet.css" media="screen">
+
+    <link rel="icon" type="image/svg" href="/assets/images/book-pen.svg">
+
+    <meta name="theme-color" content="rgb(41, 128, 185)">
+
+    <title>Les notes de cGuille</title>
+  </head>
+
+  <body>
+    <header id="main-header">
+        <a href="/">
+          <img src="/assets/images/book-pen.svg" alt="Logo" class="site-logo" />
+          <span class="site-title">Les notes de cGuille</span>
+        </a>
+    </header>
+
+<article id="post">
+    <header>
+        <h1>Apprenons Rust : décorer nos types</h2>
+        <h3>En utilisant les traits Deref et DerefMut</h3>
+        <aside>Publié le 2021-01-12.</aside>
+    </header>
+    
+    <div class="post-content">
+<h2>Introduction</h2>
+
+<p>
+    À des fins d'apprentissage, je me suis intéressé au type
+    <a href="https://doc.rust-lang.org/std/collections/struct.BinaryHeap.html"><span class="mono">std::collections::BinaryHeap</span></a>
+    de la bibliothèque standard.<br />
+
+    Le type <span class="mono">std::collections::BinaryHeap</span>, ou
+    <a href="https://fr.wikipedia.org/wiki/Tas_binaire">tas binaire</a> en
+    français, est une structure de données idéale pour mettre en place une file
+    de priorité.
+</p>
+
+<p>
+    L'implémentation standard fournie par Rust permet de mettre dans la file n'importe quel type de données à condition
+    que ledit type implémente le <i>trait</i> <span class="mono">std::cmp::Ord</span>, c'est-à-dire si les valeurs de
+    ce type peuvent être ordonnées.<br />
+
+    Du coup je me suis dit que ce serait sympa de pouvoir ajouter facilement une notion de priorité à un type existant,
+    afin de pouvoir les mettre dans une file priorisée sans obligé le type existant à être ordonné sur la priorité.
+</p>
+
+<h2>Exemple : une file de jobs priorisée</h2>
+
+<p>
+    Si on prend l'exemple d'une file priorisée permettant de traiter des tâches d'envoi d'email, on peut imaginer
+    qu'on ait un type <span class="mono">EmailJob</span> représentant ces tâches. Voici à quoi il pourrait ressembler :
+</p>
+
+<pre><code class="language-rust">type UserId = String;
+
+#[derive(Debug)]
+enum EmailKind {
+    Welcome,
+    OrderInvoice,
+    Marketing,
+}
+
+#[derive(Debug)]
+struct EmailJob {
+    kind: EmailKind,
+    user_id: UserId,
+}
+</code></pre>
+
+<p>
+    On a également une fonction chargée de traiter ces jobs :
+</p>
+
+<pre><code class="language-rust">fn process_email_job(job: &EmailJob) {
+    // Perform the job
+    println!("Processing job: {:?}", job);
+}
+</code></pre>
+
+<p>
+    On voudrait maintenant disposer d'une file de jobs, qu'on pourrait remplir avec des valeurs de type
+    <span class="mono">EmailJob</span>, afin de les traiter de la manière suivante:
+</p>
+
+<pre><code class="language-rust">let mut queue = BinaryHeap::new();
+
+// Let's enqueue some jobs:
+queue.push(EmailJob { kind: EmailKind::Welcome, user_id: "user#1".to_string() });
+queue.push(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() });
+queue.push(EmailJob { kind: EmailKind::OrderInvoice, user_id: "user#1".to_string() });
+queue.push(EmailJob { kind: EmailKind::Welcome, user_id: "user#2".to_string() });
+
+// And then we dequeue & process every job:
+while let Some(job) = queue.pop() {
+    process_email_job(&job);
+}
+</code></pre>
+
+<p>
+    Sauf que ça ne suffit pas ! Si on essaie de
+    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=2f131629872039096fba80502c7fccd8">faire tourner tout ça</a>,
+    le compilateur nous signale que notre type <span class="mono">EmailJob</span> n'implémente pas le <i>trait</i>
+    <span class="mono">std::cmp::Ord</span>. En effet, il n'est pas ordonnable sur la priorité.
+</p>
+
+<h2>Décorons avec la priorité</h2>
+
+<p>
+    Comment pourrait-on décorer notre job avec une priorité, sans trop changer le type de job en lui-même ni son
+    utilisation ?
+    Nous allons essayer de l'enrober dans un type qui sera lui-même ordonnable sur une notion de priorité :
+</p>
+
+<pre><code class="language-rust">struct Prioritized&lt;T, P&gt; {
+    inner: T, // contain the actual data
+    priority: P, // carries the priority
+}</code></pre>
+
+<p>
+    Notez l'utilisation de types génériques : peu m'importe le type qui représentera la priorité, et encore moins
+    celui qui sera decoré.
+</p>
+
+<p>
+    Ajoutons une petite fonction permettant de créer facilement des décorations :
+</p>
+
+<pre><code class="language-rust">fn prioritize&lt;T, P&gt;(value: T, priority: P) -&gt; Prioritized&lt;T, P&gt; {
+    Prioritized { inner: value, priority }
+}</code></pre>
+
+<p>
+    Et enfin, implémentions le <i>trait</i> <span class="mono">Ord</span> ainsi que ceux qui lui sont nécessaires, en
+    délégant le calcul de l'ordre au champ <span class="mono">priority</span> :
+</p>
+
+<pre><code class="language-rust">impl&lt;T, P: PartialEq&gt; PartialEq for Prioritized&lt;T, P&gt; {
+    fn eq(&self, other: &Self) -&gt; bool {
+        self.priority == other.priority
+    }
+}
+
+impl&lt;T, P: Eq&gt; Eq for Prioritized&lt;T, P&gt; {}
+
+impl&lt;T, P: PartialOrd&gt; PartialOrd for Prioritized&lt;T, P&gt; {
+    fn partial_cmp(&self, other: &Self) -&gt; Option&lt;Ordering&gt; {
+        self.priority.partial_cmp(&other.priority)
+    }
+}
+
+impl&lt;T, P: Ord&gt; Ord for Prioritized&lt;T, P&gt; {
+    fn cmp(&self, other: &Self) -&gt; Ordering {
+        self.priority.cmp(&other.priority)
+    }
+}</code></pre>
+
+<p>
+    Pour terminer, on met à jour l'utilisation de la file pour prioriser nos jobs :
+</p>
+
+<pre><code class="language-rust">let mut queue = BinaryHeap::new();
+
+queue.push(prioritize(EmailJob { kind: EmailKind::Welcome, user_id: "user#1".to_string() }, 1));
+queue.push(prioritize(EmailJob { kind: EmailKind::Marketing, user_id: "user#1".to_string() }, -1));
+queue.push(prioritize(EmailJob { kind: EmailKind::OrderInvoice, user_id: "user#1".to_string() }, 0));
+queue.push(prioritize(EmailJob { kind: EmailKind::Welcome, user_id: "user#2".to_string() }, 1));
+
+while let Some(prioritized_job) = queue.pop() {
+    let job = &prioritized_job.inner;
+    process_email_job(job);
+}</code></pre>
+
+<p>
+    Hourra,
+    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=b912abc0bd363eb83040981bc7752ca9">cela fonctionne</a> !
+    Les jobs sont bien traités dans l'ordre de leur priorité : ceux enrobés dans une priorité plus grande en premier,
+    jusqu'à traiter celui à la plus faible priorité.
+</p>
+
+<h2>Obtenir la valeur enrobée avec <span class="mono">Deref</span></h2>
+
+<p>
+    Il reste un petit truc qui me chagrine : j'ai dû changer la façon de dépiler les jobs, car je dois désormais aller
+    extraire le job de son enrobage de priorisation.<br />
+
+    Or, si ça ne me gêne pas trop d'enrober dans la priorité lorsque j'envoie le job dans le file d'attente, j'aimerais
+    que ce soit un peu plus transparent au dépilage, car la notion de priorité est probablement moins intéressante à ce
+    moment-là.
+</p>
+
+<p>
+    Pour obtenir ce comportement, je me suis inspiré du type standard
+    <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><span class="mono">Box</span></a>,
+    que l'on peut déréférencer pour obtenir le contenu de la boîte.<br />
+
+    Il est possible de permettre ce déréférencement en implémentant nous-même les <i>traits</i>
+    <a href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><span class="mono">Deref</span></a>
+    (et le cas échéant
+    <a href="https://doc.rust-lang.org/std/ops/trait.DerefMut.html"><span class="mono">DerefMut</span></a>),
+    comme le fait le type <span class="mono">Box</span> :
+</p>
+
+<pre><code class="language-rust">impl&lt;T, P&gt; Deref for Prioritized&lt;T, P&gt; {
+    type Target = T;
+
+    fn deref(&self) -&gt; &Self::Target {
+        &self.inner
+    }
+}
+
+impl&lt;T, P&gt; DerefMut for Prioritized&lt;T, P&gt; {
+    fn deref_mut(&mut self) -&gt; &mut Self::Target {
+        &mut self.inner
+    }
+}
+</code></pre>
+
+<p>
+    Nous pouvons ensuite rétablir la boucle du dépilage des jobs comme nous l'avions écrit précédemment, sans avoir
+    à nous préoccuper du fait que notre job est décoré par le type <span class="mono">Prioritized</span> : la valeur
+    est implicitement déréférencée.
+</p>
+
+<pre><code class="language-rust">while let Some(job) = queue.pop() {
+    process_email_job(&job);
+}
+</code></pre>
+
+<p>
+    Voici
+    <a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=de5defd314e21ce28274fc89b70067a9">le résultat final</a>.
+</p>
+
+<p>
+    À noter que je ne suis pas certain que cette utilisation des <i>traits</i> <span class="mono">Deref</span> et
+    <span class="mono">DerefMut</span> soit nécessairement une bonne idée. Cela permet certes de manipuler des valeurs
+    décorées un peu comme si elles ne l'étaient pas, mais parfois, l'explicite est une meilleure idée que l'implicite.
+    <br />
+    Peut-être l'opérateur de déréférencement devrait-il être réservé aux types du genre <i>smart pointers</i> comme
+    l'est le type <span class="mono">Box</span>.
+</p>
+
+<p>
+    Si on souhaite présenter une API simple tout en conservant le mécanisme de décoration, on devrait peut-être plutôt
+    encapsuler le <span class="mono">BinaryHeap</span> dans une structure dédiée, et exposer des méthodes permettant
+    d'ajouter et récupérer les données dedans. Ce serait alors le rôle de ces méthodes de gérer la décoration et
+    l'extraction des valeurs de la file (tiens, voilà une autre idée de billet de blog…).
+</p>
+
+<p>
+    Dans tous les cas, ce petit exemple aura au moins eu le mérite de me faire mieux comprendre ce qu'il se passe
+    lorsqu'on utilise le type <span class="mono">Box</span>, et comment mettre en place ce comportement dans mes propres
+    types en implémentant les bons <i>traits</i>.
+</p>
+
+    </div>
+    
+    <aside>
+        <p><a href="/" class="return-link">Retour</a></p>
+    </aside>
+
+    <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
+</article>
+
+    <script src="/assets/javascripts/prototypes.js"></script>
+    <script src="/assets/javascripts/polyfills.js"></script>
+
+    <script src="/assets/javascripts/prism.js"></script>
+
+    <script src="/assets/javascripts/external-links-targets.js"></script>
+    <script src="/assets/javascripts/return-links.js"></script>
+    <script src="/assets/javascripts/click-to-reveal.js"></script>
+  </body>
+</html>

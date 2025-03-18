@@ -4,6 +4,13 @@
     <section class="posts-list-section">
         <ul class="posts-list">
             <li class="posts-list-item">
+                <a href="/posts/2021-01-12-rust-decorer-type-avec-deref.html" title="Apprenons Rust : décorer nos types">
+                    <h2>Apprenons Rust : décorer nos types</h2>
+                    <h3>En utilisant les traits Deref et DerefMut</h3>
+                    <aside>Publié le 2021-01-12.</aside>
+                </a>
+            </li>
+            <li class="posts-list-item">
                 <a href="/posts/2018-07-21-apprendre-rust-http-crud.html" title="Apprenons Rust : le plus bête des services web">
                     <h2>Apprenons Rust : le plus bête des services web</h2>
                     <h3>Du CRUD et des doggos</h3>
