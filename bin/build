@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -eu
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ROOT_DIR="$(realpath "${SCRIPT_DIR}/..")"
+source "${ROOT_DIR}/bin/logger.bash"
+
+OUTPUT_DIR="${ROOT_DIR}/output/"
+OUTPUT_PREV="${ROOT_DIR}/output.bak/"
+
+BUILD_DIR="$(mktemp -d)"
+
+log "Build start"
+
+log "⋅ Build pages"
+
+find "${ROOT_DIR}/src/pages" \
+    -type f -name '*.php' \
+    -print0 \
+    | xargs -0 --max-args=1 bash "${ROOT_DIR}/bin/build_page.bash" "$BUILD_DIR"
+
+log "⋅ Copy assets"
+
+cp -R "${ROOT_DIR}/src/assets" "$BUILD_DIR"/
+
+log "⋅ Move build to output"
+
+rm -rf "$OUTPUT_PREV"
+mv "$OUTPUT_DIR" "$OUTPUT_PREV"
+mv "$BUILD_DIR" "$OUTPUT_DIR"
+
+log "Build finished"
