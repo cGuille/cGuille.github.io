@@ -16,5 +16,7 @@ sleep 0.1s
 
 while sleep 0.1
 do
+    set +e
     find "${ROOT_DIR}/src" -type f -print | entr -d "${ROOT_DIR}/bin/build"
+    set -e
 done
