@@ -6,12 +6,15 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ROOT_DIR="$(realpath "${SCRIPT_DIR}/..")"
 source "${ROOT_DIR}/bin/logger.bash"
 
-OUTPUT_DIR="${ROOT_DIR}/output/"
-OUTPUT_PREV="${ROOT_DIR}/output.bak/"
+DOCS_DIR="${ROOT_DIR}/docs/"
+DOCS_BACKUP="${ROOT_DIR}/docs.bak/"
 
 BUILD_DIR="$(mktemp -d)"
 
 log "Build start"
+
+log "⋅ Write CNAME file"
+echo -n 'notes.cguille.net' > "$BUILD_DIR"/CNAME
 
 log "⋅ Build pages"
 
@@ -24,10 +27,10 @@ log "⋅ Copy assets"
 
 cp -R "${ROOT_DIR}/src/assets" "$BUILD_DIR"/
 
-log "⋅ Move build to output"
+log "⋅ Move build to public docs/ directory"
 
-rm -rf "$OUTPUT_PREV"
-mv "$OUTPUT_DIR" "$OUTPUT_PREV"
-mv "$BUILD_DIR" "$OUTPUT_DIR"
+rm -rf "$DOCS_BACKUP"
+mv "$DOCS_DIR" "$DOCS_BACKUP"
+mv "$BUILD_DIR" "$DOCS_DIR"
 
 log "Build finished"
