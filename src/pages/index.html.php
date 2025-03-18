@@ -4,6 +4,13 @@
     <section class="posts-list-section">
         <ul class="posts-list">
             <li class="posts-list-item">
+                <a href="/posts/2015-10-04-js-objets-constructeurs-prototypes-et-heritage.html" title="Les objets en JavaScript">
+                    <h2>Les objets en JavaScript</h2>
+                    <h3>Prototypes, héritage et constructeurs</h3>
+                    <aside>Publié le 2015-10-04.</aside>
+                </a>
+            </li>
+            <li class="posts-list-item">
                 <a href="/posts/2015-02-28-tant-pis.html" title="Tant pis">
                     <h2>Tant pis</h2>
                     <h3>Moralité : essayer d'être plus malin que le navigateur, ça marche pas.</h3>
