@@ -5,6 +5,13 @@
 
     <ul class="posts-list">
         <li class="posts-list-item">
+            <a href="/posts/2018-07-21-apprendre-rust-http-crud.html" title="Apprenons Rust : le plus bête des services web">
+                <h2>Apprenons Rust : le plus bête des services web</h2>
+                <h3>Du CRUD et des doggos</h3>
+                <aside>Publié le 2018-07-21.</aside>
+            </a>
+        </li>
+        <li class="posts-list-item">
             <a href="/posts/2016-03-11-des-filtres-pour-la-ligne-de-commande-avec-les-streams-de-node-js.html" title="Des filtres pour la ligne de commande avec Node.js">
                 <h2>Des filtres pour la ligne de commande avec Node.js</h2>
                 <h3>Jouons avec l'API stream</h3>
