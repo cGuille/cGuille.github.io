@@ -1,8 +1,0 @@
-url: https://notes.cguille.net
-title: Les notes de cGuille
-
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - README.md
-  - CNAME
