@@ -1,12 +1,17 @@
-<?php require __DIR__ . '/../../fragments/head.html.php'; ?>
+<?php
+require __DIR__ . '/../../helpers/posts.php';
+require __DIR__ . '/../../fragments/head.html.php';
+
+$post = get_post(__FILE__);
+?>
 
 <article id="post">
     <header>
-        <h1>Des filtres pour la ligne de commande avec Node.js</h2>
-        <h3>Jouons avec l'API stream</h3>
-        <aside>Publié le 2016-03-11.</aside>
+        <h1><?= $post->title ?></h2>
+        <h3><?= $post->subtitle ?></h3>
+        <aside>Publié le <?= $post->published ?>.</aside>
     </header>
-    
+
     <div class="post-content">
 <h2>Qu'est-ce qu'un filtre ?</h2>
 

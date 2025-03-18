@@ -1,12 +1,17 @@
-<?php require __DIR__ . '/../../fragments/head.html.php'; ?>
+<?php
+require __DIR__ . '/../../helpers/posts.php';
+require __DIR__ . '/../../fragments/head.html.php';
+
+$post = get_post(__FILE__);
+?>
 
 <article id="post">
     <header>
-        <h1>Apprenons Rust : le plus bête des services web</h2>
-        <h3>Du CRUD et des doggos</h3>
-        <aside>Publié le 2018-07-21.</aside>
+        <h1><?= $post->title ?></h2>
+        <h3><?= $post->subtitle ?></h3>
+        <aside>Publié le <?= $post->published ?>.</aside>
     </header>
-    
+
     <div class="post-content">
 <h2>Introduction</h2>
 

@@ -1,12 +1,17 @@
-<?php require __DIR__ . '/../../fragments/head.html.php'; ?>
+<?php
+require __DIR__ . '/../../helpers/posts.php';
+require __DIR__ . '/../../fragments/head.html.php';
+
+$post = get_post(__FILE__);
+?>
 
 <article id="post">
     <header>
-        <h1>Apprenons Rust : décorer nos types</h2>
-        <h3>En utilisant les traits Deref et DerefMut</h3>
-        <aside>Publié le 2021-01-12.</aside>
+        <h1><?= $post->title ?></h2>
+        <h3><?= $post->subtitle ?></h3>
+        <aside>Publié le <?= $post->published ?>.</aside>
     </header>
-    
+
     <div class="post-content">
 <h2>Introduction</h2>
 

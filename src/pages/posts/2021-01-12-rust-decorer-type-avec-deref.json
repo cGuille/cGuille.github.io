@@ -1,0 +1,5 @@
+{
+    "title": "Apprenons Rust : décorer nos types",
+    "subtitle": "En utilisant les traits Deref et DerefMut",
+    "published": "2021-01-12"
+}

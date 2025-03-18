@@ -1,12 +1,17 @@
-<?php require __DIR__ . '/../../fragments/head.html.php'; ?>
+<?php
+require __DIR__ . '/../../helpers/posts.php';
+require __DIR__ . '/../../fragments/head.html.php';
+
+$post = get_post(__FILE__);
+?>
 
 <article id="post">
     <header>
-        <h1>Tant pis</h2>
-        <h3>Moralité : essayer d'être plus malin que le navigateur, ça marche pas.</h3>
-        <aside>Publié le 2015-02-28.</aside>
+        <h1><?= $post->title ?></h2>
+        <h3><?= $post->subtitle ?></h3>
+        <aside>Publié le <?= $post->published ?>.</aside>
     </header>
-    
+
     <div class="post-content">
 <p>Il y a de ces matins où je me réveille avec une idée en tête. J'ai envie de l'essayer tout de suite, mais la plupart du temps, je ne peux pas.</p>
 <p>Spoiler : en général, à la fin je suis déçu (quand je ne l'oublie pas carrément). Cette fois j'ai été déçu, mais j'ai quand-même envie de le raconter.</p>

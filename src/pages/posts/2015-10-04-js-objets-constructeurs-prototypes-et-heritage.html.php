@@ -1,12 +1,17 @@
-<?php require __DIR__ . '/../../fragments/head.html.php'; ?>
+<?php
+require __DIR__ . '/../../helpers/posts.php';
+require __DIR__ . '/../../fragments/head.html.php';
+
+$post = get_post(__FILE__);
+?>
 
 <article id="post">
     <header>
-        <h1>Les objets en JavaScript</h2>
-        <h3>Prototypes, héritage et constructeurs</h3>
-        <aside>Publié le 2015-10-04.</aside>
+        <h1><?= $post->title ?></h2>
+        <h3><?= $post->subtitle ?></h3>
+        <aside>Publié le <?= $post->published ?>.</aside>
     </header>
-    
+
     <div class="post-content">
 <p>
     Bonjour ! Ces temps-ci, j'ai lu pas mal de ressources et fait pas mal d'essais sur les objets en JS, sur leurs prototypes et ce qu'il se passe quand on utilise un constructeur.<br />
