@@ -5,6 +5,13 @@
 
     <ul class="posts-list">
         <li class="posts-list-item">
+            <a href="/posts/2016-03-11-des-filtres-pour-la-ligne-de-commande-avec-les-streams-de-node-js.html" title="Des filtres pour la ligne de commande avec Node.js">
+                <h2>Des filtres pour la ligne de commande avec Node.js</h2>
+                <h3>Jouons avec l'API stream</h3>
+                <aside>Publié le 2016-03-11.</aside>
+            </a>
+        </li>
+        <li class="posts-list-item">
             <a href="/posts/2015-10-04-js-objets-constructeurs-prototypes-et-heritage.html" title="Les objets en JavaScript">
                 <h2>Les objets en JavaScript</h2>
                 <h3>Prototypes, héritage et constructeurs</h3>

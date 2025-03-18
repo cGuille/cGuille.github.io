@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/prism.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/stylesheet.css" media="screen">
+
+    <link rel="icon" type="image/svg" href="/assets/images/book-pen.svg">
+
+    <meta name="theme-color" content="rgb(41, 128, 185)">
+
+    <title>Les notes de cGuille</title>
+  </head>
+
+  <body>
+    <header id="main-header">
+        <a href="/">
+          <img src="/assets/images/book-pen.svg" alt="Logo" class="site-logo" />
+          <span class="site-title">Les notes de cGuille</span>
+        </a>
+    </header>
+
+<article id="post">
+    <header>
+        <h1>Des filtres pour la ligne de commande avec Node.js</h2>
+        <h3>Jouons avec l'API stream</h3>
+        <aside>Publié le 2016-03-11.</aside>
+    </header>
+    
+    <div class="post-content">
+<h2>Qu'est-ce qu'un filtre ?</h2>
+
+<p>
+    Je vais vous en donner la définition que j'ai apprise à la fac : il s'agit d'une commande qui
+    lit son entrée standard et qui écrit sur sa sortie standard.<br />
+    Autrement dit, il s'agit d'une commande qui va traiter les données qu'on lui donne pour en
+    générer d'autres. Ces commandes peuvent ainsi être chaînées pour combiner des traitements.
+</p>
+
+<p>
+    Vous connaissez peut-être les commandes <code class="language-bash">grep</code>,
+    <code class="language-bash">cut</code>, <code class="language-bash">sort</code>,
+    <code class="language-bash">uniq</code>, <code class="language-bash">tr</code> ou encore
+    <code class="language-bash">sed</code> : on peut toutes les qualifier de filtres !
+</p>
+
+<h2>L'API <code class="language-javascript">stream</code> de Node.js</h2>
+
+<h3>Qu'est-ce qu'un flux (<i>stream</i>) ?</h3>
+
+<p>
+    Node.js fournit un module <code class="language-javascript">stream</code>. Ce module contient
+    des objets représentant des flux.<br />
+    Un flux est un objet permettant d'abstraire une source ou une destination de données. Cela
+    signifie que c'est un moyen de représenter un endroit où on va soit récupérer des informations,
+    soit déposer des informations.<br />
+    On distingue donc deux types de flux : les flux en lecture (<i>readable</i> ou
+    <i>input streams</i>) ainsi que les flux en écriture (<i>writable</i> ou <i>output streams</i>).<br />
+    À ces deux types de flux on peut ajouter un troisième : le flux en duplex. Il s'agit d'un flux 
+    qui combine les capacités des deux catégories : on peut y envoyer des données <b>et</b> recevoir
+    des données en sa provenance.
+</p>
+
+<p>
+    En résumé :
+    <ul>
+        <li>On peut lire les données fournies par un flux en lecture.</li>
+        <li>On peut envoyer des données dans un flux en écriture.</li>
+        <li>
+            On peut envoyer des données dans un flux en duplex et recevoir les données de ce même
+            flux en duplex.
+        </li>
+    </ul>
+</p>
+
+<p>
+    Dans l'environnement de Node.js, on dispose de deux propriétés
+    <code class="language-javascript">process.stdin</code> (<i>standard input</i>) et
+    <code class="language-javascript">process.stdout</code> (<i>standard output</i>).<br />
+    Ces objets permettent respectivement de lire l'entrée standard et d'écrire sur la sortie
+    standard. Vous l'aurez sans doute deviné : ce sont des flux ! L'entrée standard est un flux en
+    lecture (car on peut lire les données de l'entrée standard) et la sortie standard est un flux en
+    écriture (car on peut y écrire des données).
+</p>
+
+<h3>La méthode <code class="language-javascript">.pipe()</code></h3>
+
+<p>
+    Il est possible de <i>piper</i> les flux les uns vers les autres, de la même façon qu'on peut
+    <i>piper</i> les commandes bash les unes vers les autres.<br />
+    Ainsi, on peut écrire un programme Node.js qui écrit sur sa sortie standard tout ce qu'il reçoit
+    sur son entrée très simplement :
+    <code class="language-javascript">process.stdin.pipe(process.stdout);</code>. Ce code signifie :
+    « envoie les données du flux en lecture <code class="language-javascript">process.stdin</code>
+    dans le flux en écriture <code class="language-javascript">process.stdout</code> ».
+</p>
+
+<p>
+    Enregistrons ce code dans un fichier <code>filtre.js</code> et utilisons la commande
+    <code class="language-bash">echo</code> pour envoyer du texte sur son entrée :
+    <code class="language-bash">echo "Hello, world!" |node filtre.js</code>.<br />
+    Fabuleux, nous avons écrit notre premier filtre !
+</p>
+<div>
+    <pre class="click-to-reveal" data-reveal-label="Voir le résultat"><code class="language-none">Hello, world!</code></pre>
+</div>
+<p>
+    Bon d'accord, il ne fait pas encore grand chose ; je vous propose d'ajouter un petit traitement
+    au milieu. Pour cela nous allons utiliser…
+</p>
+
+<h3>Les flux de transformation</h3>
+
+<p>
+    Le module <code class="language-javascript">stream</code class="language-javascript"> contient
+    un constructeur <code class="language-javascript">Transform</code>. Ce constructeur permet de
+    créer des flux de type duplex afin de facilement transformer les données qui y transitent.<br />
+    À l'aide de <code class="language-javascript">Transform</code>, modifions notre filtre existant
+    afin qu'il mette en majuscules tout le texte qu'il reçoit !
+</p>
+
+<pre><code class="language-javascript">'use strict';
+
+const TransformStream = require('stream').Transform;
+
+// Définissons un flux de transformation en étendant le constructeur du module stream.
+class CapsLockStream extends TransformStream {
+    // La méthode _transform() sera appelée par le prototype parent afin de transformer les
+    // données. Elle doit appeler le callback fourni pour transmettre les nouvelles données.
+    _transform(chunk, encoding, callback) {
+        const chunkString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+        callback(null, chunkString.toUpperCase());
+    }
+}
+
+// Cette fois-ci, on met notre flux de transformation entre les flux d'entrée et de sortie.
+// On envoie les données de l'entrée standard dans le flux de transformation, puis les données du
+// flux de transformation dans la sortie standard :
+process.stdin.pipe(new CapsLockStream).pipe(process.stdout);</code></pre>
+
+<p>
+    Si on relance notre script comme tout à l'heure
+    (<code class="language-bash">echo "Hello, world!" |node filtre.js</code>), on peut constater que
+    notre filtre fonctionne !
+</p>
+<div>
+    <pre class="click-to-reveal" data-reveal-label="Voir le résultat"><code class="language-none">HELLO, WORLD!</code></pre>
+</div>
+
+<h2>Écrivons un véritable filtre</h2>
+
+<p>
+    Maintenant que nous savons comment utiliser les flux de transformation, nous allons pouvoir nous
+    essayer à l'écriture d'un filtre un peu moins trivial.<br />
+    Le but du jeu sera donc d'écrire un filtre qui reçoit un flux d'URL (une par ligne) en entrée et
+    les transforme pour afficher des objets JSON représentant les paramètres de recherche (<i>query
+    string</i>) de chaque URL.
+</p>
+
+<p>
+    Nous allons pour cela utiliser <a href="https://nodejs.org/dist/latest-v5.x/docs/api/url.html">
+    le module <code class="language-javascript">url</code> de Node.js</a> pour <i>parser</i> les URL.
+</p>
+
+<p>
+    Avez-vous une idée de comment nous allons procéder ?<br />
+    Allez, on se lance ! Commençons par écrire un flux de transformation qui reçoit les URL puis les
+    renvoie presque sans rien faire histoire d'avoir un squelette de code et de vérifier que tout
+    se passe bien.
+</p>
+
+<pre><code class="language-javascript">'use strict';
+
+const url = require('url');
+const TransformStream = require('stream').Transform;
+
+class QueryStringExtractor extends TransformStream {
+    _transform(chunk, encoding, callback) {
+        const urlString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+        callback(null, this.extractQueryString(urlString) + "\n");
+    }
+
+    extractQueryString(urlString) {
+        // Ici on écrira le code qui extrait les paramètres de l'URL et les
+        // renvoie formatés en JSON. En attendant on se contente de peu :
+        return "Oh une URL : " + urlString;
+    }
+}
+
+process.stdin.pipe(new QueryStringExtractor).pipe(process.stdout);</code></pre>
+
+<p>
+    Créons également un fichier <code>urls.txt</code> qui contient quelques données de test :
+</p>
+
+<pre><code class="language-none">http://example.cguille.net
+http://example.cguille.net?toto=titi
+http://example.cguille.net?foo=bar&amp;baz=1
+http://example.cguille.net/another/example/?vroum[foo]=bar
+http://example.cguille.net/search?q=test+hey
+http://example.cguille.net/search?q=h%C3%A9+oh</code></pre>
+
+<p>
+    Et enfin testons notre filtre : <code class="language-bash">node filtre.js < urls.txt</code>.
+</p>
+<div>
+    <pre class="click-to-reveal" data-reveal-label="Voir le résultat"><code class="language-none">Oh une URL : http://example.cguille.net
+http://example.cguille.net?toto=titi
+http://example.cguille.net?foo=bar&amp;baz=1
+http://example.cguille.net/another/example/?vroum[foo]=bar
+http://example.cguille.net/search?q=test+hey
+http://example.cguille.net/search?q=h%C3%A9+oh</code></pre>
+</div>
+
+<p>
+    Oups ! De toute évidence, le filtre de transformation n'a été appliqué qu'une seule fois à
+    toutes les URL au lieu d'être appliqué à chaque URL. Que s'est-il passé ?
+</p>
+
+<p>
+    Nous sommes partis du principe que notre fonction <code class="language-javascript">_transform()</code>
+    allait être appelée une fois pour chaque URL, c'est-à-dire pour chaque ligne. Or c'est faux ! À
+    aucun moment nous n'avons découpé en lignes le texte reçu en entrée.
+</p>
+
+<h3>Traiter l'entrée ligne par ligne</h3>
+
+<p>
+    Nous avons donc besoin de traiter le flux ligne par ligne. Ce besoin est <i>a priori</i> assez
+    courant, il est donc fort probable que quelqu'un ait déjà résolu le problème.<br />
+    Bingo ! Le <a href="https://www.npmjs.com/package/byline">module npm <code>byline</code></a> a
+    l'air de faire ce que l'on souhaite ! Si on l'installe (<code class="language-bash">npm install
+    --save byline</code>), on peut utiliser le prototype <code class="language-javascript">LineStream</code>
+    qu'il fournit afin d'obtenir un flux ligne par ligne.
+</p>
+
+<pre data-line="5,18-19"><code class="language-javascript">'use strict';
+
+const url = require('url');
+const TransformStream = require('stream').Transform;
+const LineStream = require('byline').LineStream;// On importe le flux par ligne.
+
+class QueryStringExtractor extends TransformStream {
+    _transform(chunk, encoding, callback) {
+        const urlString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+        callback(null, this.extractQueryString(urlString) + "\n");
+    }
+
+    extractQueryString(urlString) {
+        return "Oh une URL : " + urlString;
+    }
+}
+
+// On l'intercale entre l'entrée standard et notre flux de transformation:
+process.stdin.pipe(new LineStream).pipe(new QueryStringExtractor).pipe(process.stdout);</code></pre>
+
+<div>
+    <pre class="click-to-reveal" data-reveal-label="Voir le résultat"><code class="language-none">Oh une URL : http://example.cguille.net
+Oh une URL : http://example.cguille.net?toto=titi
+Oh une URL : http://example.cguille.net?foo=bar&amp;baz=1
+Oh une URL : http://example.cguille.net/another/example/?vroum[foo]=bar
+Oh une URL : http://example.cguille.net/search?q=test+hey
+Oh une URL : http://example.cguille.net/search?q=h%C3%A9+oh</code></pre>
+</div>
+
+<p>
+    Voilà qui est beaucoup mieux ! Désormais, on obtient une transformation par URL.
+</p>
+
+<h3>Implémenter la transformation</h3>
+
+<p>
+    Il ne nous reste plus qu'à récupérer l'information recherchée :
+</p>
+
+<pre data-line="14-15"><code class="language-javascript">'use strict';
+
+const url = require('url');
+const TransformStream = require('stream').Transform;
+const LineStream = require('byline').LineStream;
+
+class QueryStringExtractor extends TransformStream {
+    _transform(chunk, encoding, callback) {
+        const urlString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+        callback(null, this.extractQueryString(urlString) + "\n");
+    }
+
+    extractQueryString(urlString) {
+        const urlObject = url.parse(urlString, true);
+        return JSON.stringify(urlObject.query);
+    }
+}
+
+process.stdin.pipe(new LineStream).pipe(new QueryStringExtractor).pipe(process.stdout);</code></pre>
+
+<div>
+    <pre class="click-to-reveal" data-reveal-label="Voir le résultat"><code class="language-none">{}
+{"toto":"titi"}
+{"foo":"bar","baz":"1"}
+{"vroum[foo]":"bar"}
+{"q":"test hey"}
+{"q":"hé oh"}</code></pre>
+</div>
+
+<h3>Gérer l'erreur <code>EPIPE</code></h3>
+
+<p>
+    Nous disions que l'un des grands intérêts de ce genre de commandes était de pouvoir les combiner
+    avec d'autres. Que se passe-t-il si par exemple nous essayons de récupérer uniquement les deux
+    premières lignes du résultat à l'aide de la commande
+    <code class="language-bash">node filtre.js < urls.txt |head -n2</code> ?
+</p>
+
+<div>
+    <pre class="click-to-reveal" data-reveal-label="Voir le résultat"><code class="language-none">{}
+{"toto":"titi"}
+events.js:154
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: write EPIPE
+    at exports._errnoException (util.js:856:11)
+    at WriteWrap.afterWrite (net.js:767:14)</code></pre>
+</div>
+
+<p>
+    Horreur, tout explose ! Mais pourquoi donc ?<br />
+    La commande <code class="language-bash">head</code> a brutalement fermé son entrée standard
+    (c'est-à-dire notre sortie standard !) une fois qu'elle a lu suffisamment de lignes. Une fois
+    cela fait, il n'est plus possible d'y envoyer quoi que ce soit, donc on ne doit plus écrire
+    dans <code class="language-javascript">process.stdout</code>.<br />
+    On peut donc décider de simplement quitter le programme lorsque cette erreur se présente.
+</p>
+
+<pre data-line="19-24"><code class="language-javascript">'use strict';
+
+const url = require('url');
+const TransformStream = require('stream').Transform;
+const LineStream = require('byline').LineStream;
+
+class QueryStringExtractor extends TransformStream {
+    _transform(chunk, encoding, callback) {
+        const urlString = chunk.toString(encoding !== 'buffer' ? encoding : null);
+        callback(null, this.extractQueryString(urlString) + "\n");
+    }
+
+    extractQueryString(urlString) {
+        const urlObject = url.parse(urlString, true);
+        return JSON.stringify(urlObject.query);
+    }
+}
+
+process.stdout.on('error', function (error) {
+    if (error.code === 'EPIPE') {
+        process.exit(0); // On ne peut plus rien écrire, arrêtons-nous tout de suite.
+    }
+    throw error; // Ce n'est pas l'erreur attendue ; oups !
+});
+
+process.stdin.pipe(new LineStream).pipe(new QueryStringExtractor).pipe(process.stdout);</code></pre>
+
+<div>
+    <pre class="click-to-reveal" data-reveal-label="Voir le résultat"><code class="language-none">{}
+{"toto":"titi"}</code></pre>
+</div>
+
+<p>Et voilà, tout va bien !</p>
+
+    </div>
+    
+    <aside>
+        <p><a href="/" class="return-link">Retour</a></p>
+    </aside>
+
+    <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
+</article>
+
+    <script src="/assets/javascripts/prototypes.js"></script>
+    <script src="/assets/javascripts/polyfills.js"></script>
+
+    <script src="/assets/javascripts/prism.js"></script>
+
+    <script src="/assets/javascripts/external-links-targets.js"></script>
+    <script src="/assets/javascripts/return-links.js"></script>
+    <script src="/assets/javascripts/click-to-reveal.js"></script>
+  </body>
+</html>
