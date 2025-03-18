@@ -1,0 +1,204 @@
+html {
+  --logo-color: black;
+  --main-color: rgb(41, 128, 185);
+  --main-variant-color: rgba(41, 128, 185, 0.15);
+  --text-color: rgb(40, 40, 40);
+  --accent-color: rgb(39, 174, 96);
+  --accent-variant-color: rgba(39, 174, 96, 0.15);
+
+  --left-border-width: 15px;
+  --left-border-padding: 50px;
+
+  --table-border-color: white;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  background-image: linear-gradient(90deg, var(--main-color), var(--main-color) var(--left-border-width), transparent var(--left-border-width), transparent var(--left-border-width));
+  background-repeat: no-repeat;
+}
+
+body {
+  margin: 0;
+  font-family: Tahoma, Geneva, Kalimati, sans-serif;
+  color: var(--text-color);
+}
+
+#page-content > section:not(.posts-list-section), #page-title {
+  padding-left: var(--left-border-padding);
+}
+
+#page-content {
+  padding-bottom: 1em;
+}
+
+h1 {
+  font-size: 2em;
+  line-height: 1em;
+}
+h2 {
+  font-size: 1.7em;
+}
+
+a {
+  color: var(--main-color);
+}
+a:hover {
+  color: #3a9bdc;
+}
+.return-link {
+  text-decoration: none;
+}
+.return-link:before {
+  content: '← ';
+}
+
+#main-header a {
+  align-items: center;
+  color: var(--logo-color);
+  display: flex;
+  font-family: Tahoma, Geneva, Kalimati, sans-serif;
+  font-size: 5.5vw;
+  height: 100%;
+  justify-content: center;
+  padding: .2em 1em;
+  text-decoration: none;
+}
+
+#main-header .site-logo {
+  width: 8vw;
+  margin-right: 2vw;
+}
+
+.posts-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.posts-list-item > a {
+  background-image: linear-gradient(90deg, var(--accent-color), var(--accent-color) var(--left-border-width), transparent var(--left-border-width), transparent var(--left-border-width));
+  display: block;
+  padding: 2em 1em;
+  padding-left: var(--left-border-padding);
+  color: var(--text-color);
+  text-decoration: none;
+}
+.posts-list-item > a:hover {
+  background-image: linear-gradient(90deg, var(--accent-color), var(--accent-color) var(--left-border-width), var(--accent-variant-color) var(--left-border-width), var(--accent-variant-color) var(--left-border-width));
+}
+.posts-list-item h2, .posts-list-item h3 {
+  margin: 0 0 0.3em 0;
+}
+.posts-list-item h4 {
+  font-size: 1.4em;
+}
+.posts-list-item h5 {
+  font-size: 1em;
+}
+.posts-list-item aside {
+  font-size: 0.6em;
+}
+
+.more-posts {
+  background-image: linear-gradient(90deg, var(--accent-color), var(--accent-color) var(--left-border-width), transparent var(--left-border-width), transparent var(--left-border-width));
+  padding-left: var(--left-border-padding);
+  margin-top: 0;
+}
+
+#post > * {
+  padding: 0.3em 2em;
+}
+
+#post header {
+  background-image: linear-gradient(90deg, var(--accent-color), var(--accent-color) var(--left-border-width), transparent var(--left-border-width), transparent var(--left-border-width));
+  margin: 0.5em 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-size: 1.3em;
+}
+
+#post header > * {
+  margin: 0.5em 0;
+}
+
+.post-content p {
+  font-size: 1.1em;
+  line-height: 1.3;
+}
+
+.mono {
+  font-family: Consolas, Monaco, monospace;
+}
+
+table {
+  border-collapse: collapse;
+  margin: auto;
+  width: 90vw;
+}
+
+table.bottom-caption {
+  caption-side: bottom;
+}
+
+table > caption {
+  font-style: italic;
+  margin: .2em 0;
+}
+
+table thead td {
+  background-color: var(--main-color);
+  border-bottom-width: 8px;
+  color: var(--table-border-color);
+}
+
+table td {
+  background-color: var(--main-variant-color);
+  border: 3px solid var(--table-border-color);
+  padding: .5em;
+}
+
+blockquote {
+  background-color: var(--main-variant-color);
+  margin: 0;
+  padding: 0.7em;
+}
+blockquote p {
+  margin: 0;
+  padding: 0.75em 0;
+  border-bottom: 1px solid var(--main-variant-color);
+}
+blockquote p:last-of-type {
+  border-bottom: none;
+}
+blockquote cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+button {
+  padding: 0.35em;
+  margin: 0.1em 0.05em;
+  border: none;
+  font-size: 1em;
+  color: white;
+  background-color: var(--main-color);
+  cursor: pointer;
+}
+button:hover {
+  background-color: var(--accent-color);
+}
+
+.click-to-reveal.hidden {
+  display: none;
+}
+
+footer {
+  margin: 0 1em;
+  padding-top: 0.3em;
+  border-top: 0.2em solid var(--main-color);
+  text-align: center;
+}
