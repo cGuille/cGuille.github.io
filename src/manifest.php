@@ -53,5 +53,11 @@ return new Manifest(
             subtitle: 'Trucs et astuces pour la CLI',
             published: '2025-03-19',
         ),
+        new Post(
+            path: 'posts/cli-cheat-sheet-git.html.php',
+            title: 'Cheat Sheet : Git',
+            subtitle: 'Trucs et astuces pour la CLI',
+            published: '2025-03-20',
+        ),
     ]
 );

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/prism.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/stylesheet.css" media="screen">
+
+    <link rel="icon" type="image/svg" href="/assets/images/book-pen.svg">
+
+    <meta name="theme-color" content="rgb(41, 128, 185)">
+
+    <title>Les notes de cGuille</title>
+  </head>
+
+  <body>
+    <header id="main-header">
+        <a href="/">
+          <img src="/assets/images/book-pen.svg" alt="Logo" class="site-logo" />
+          <span class="site-title">Les notes de cGuille</span>
+        </a>
+    </header>
+
+<article id="post">
+    <header>
+        <h1>Cheat Sheet : Git</h2>
+        <h3>Trucs et astuces pour la CLI</h3>
+        <aside>Publié le 2025-03-20.</aside>
+    </header>
+
+    <div class="post-content">
+        <p>
+    Cette note fait partie de
+    <a href="/cli-cheat-sheets.html">
+        la série « Trucs et astuces pour la CLI »
+    </a>.
+</p>
+
+<h2>Filtrer des fichiers avec des patterns</h2>
+
+<p>
+    Les commandes qui acceptent des fichiers du dépôt supportent une notation
+    permettant de les filtrer avec des patterns.
+</p>
+<p>
+    Pour cela, au lieu de lister les fichiers manuellement ou avec un glob pattern Bash,
+    on peut donner <code class="language-bash">:</code> suivi d'un pattern du chemin complet.<br />
+    En ajoutant un <code class="language-bash">!</code> (ou la notation longue <code class="language-bash">(exclude)</code>) après le <code class="language-bash">:</code>, on réalise une exclusion.
+</p>
+
+<p>
+    Quelques exemples :
+</p>
+
+<pre><code class="language-bash"># Affiche l&#039;historique des changements de tous les fichiers `Cargo.toml` du dépôt :
+git log -p  &#039;:*/Cargo.toml&#039;
+
+# Exclus l&#039;affichage des changements de tous les fichiers dont le chemin termine par `.lock`:
+git show &#039;:!*.lock&#039;
+# Même chose en version longue (`(exclude)` au lieu de `!`).
+git show &#039;:(exclude)*.lock&#039;
+
+# Fonctionne également avec git diff:
+git diff &#039;:!*.lock&#039;
+
+# Ou encore avec git grep:
+git grep -w clap &#039;:*/Cargo.toml&#039;</code></pre>
+<h2>Renommages dans l'historique d'un fichier</h2>
+
+<p>
+    On peut utiliser l'option <code class="language-bash">--follow</code> pour suivre les renommages d'un fichier dans le log de ses changements.
+</p>
+
+<pre><code class="language-bash">git log --follow -- path/to/file</code></pre>
+<h2>Patchs</h2>
+
+<p>La sortie standard de <code class="language-bash">git diff</code> peut simplement être utilisée pour créer un fichier de patch.
+
+<pre><code class="language-bash"># Crée un patch avec le diff actuel :
+git diff &gt; file.patch
+
+# Applique les changements du patch dans le répertoire de travail :
+git apply file.patch
+
+# Crée un patch avec uniquement les changements du fichier README.md :
+git diff README.md &gt; readme.patch</code></pre>    </div>
+    
+    <aside>
+        <p><a href="/" class="return-link">Retour</a></p>
+    </aside>
+
+    <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
+</article>
+
+    <script src="/assets/javascripts/prototypes.js"></script>
+    <script src="/assets/javascripts/polyfills.js"></script>
+
+    <script src="/assets/javascripts/prism.js"></script>
+
+    <script src="/assets/javascripts/external-links-targets.js"></script>
+    <script src="/assets/javascripts/return-links.js"></script>
+    <script src="/assets/javascripts/click-to-reveal.js"></script>
+  </body>
+</html>
