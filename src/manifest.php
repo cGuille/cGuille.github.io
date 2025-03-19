@@ -13,6 +13,10 @@ return new Manifest(
             path: 'posts.html.php',
             title: 'Toutes les notes',
         ),
+        new Page(
+            path: 'cli-cheat-sheets.html.php',
+            title: 'Tous les trucs et astuces pour la CLI',
+        ),
         new Post(
             path: 'posts/2015-02-28-tant-pis.html.php',
             title: 'Tant pis',
@@ -42,6 +46,12 @@ return new Manifest(
             title: 'Apprenons Rust : décorer nos types',
             subtitle: 'En utilisant les traits Deref et DerefMut',
             published: '2021-01-12',
+        ),
+        new Post(
+            path: 'posts/cli-cheat-sheet-apt-dpkg.html.php',
+            title: 'Cheat Sheet : apt et dpkg',
+            subtitle: 'Trucs et astuces pour la CLI',
+            published: '2025-03-19',
         ),
     ]
 );

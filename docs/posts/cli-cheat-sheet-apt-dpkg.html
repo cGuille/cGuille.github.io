@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/prism.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/stylesheet.css" media="screen">
+
+    <link rel="icon" type="image/svg" href="/assets/images/book-pen.svg">
+
+    <meta name="theme-color" content="rgb(41, 128, 185)">
+
+    <title>Les notes de cGuille</title>
+  </head>
+
+  <body>
+    <header id="main-header">
+        <a href="/">
+          <img src="/assets/images/book-pen.svg" alt="Logo" class="site-logo" />
+          <span class="site-title">Les notes de cGuille</span>
+        </a>
+    </header>
+
+<article id="post">
+    <header>
+        <h1>Cheat Sheet : apt et dpkg</h2>
+        <h3>Trucs et astuces pour la CLI</h3>
+        <aside>Publié le 2025-03-19.</aside>
+    </header>
+
+    <div class="post-content">
+        <p>
+    Cette note fait partie de
+    <a href="/cli-cheat-sheets.html">
+        la série « Trucs et astuces pour la CLI »
+    </a>.
+</p>
+
+<h2>apt</h2>
+
+<h3>Sélection de version</h3>
+
+<p>Downgrade / installer une version spécifique d'un paquet :</p>
+
+<pre><code class="language-bash"># Affiche les versions disponibles :
+apt-cache showpkg &quot;$package_name&quot;
+
+# Installation d&#039;une version spécifique :
+sudo apt-get install &quot;$package_name&quot;=&quot;$package_version&quot;</code></pre>
+<p>Empêcher un paquet spécifique d'être mis à jour automatiquement :</p>
+
+<pre><code class="language-bash"># Bloquer les mises à jour d&#039;un paquet :
+sudo apt-mark hold &quot;$package_name&quot;
+
+# Retirer le bloquage :
+sudo apt-mark unhold &quot;$package_name&quot;
+
+# Afficher tous les paquets bloqués :
+sudo apt-mark showhold</code></pre>
+<h3>D'où vient ce paquet ?</h3>
+
+<p>Afin de savoir pourquoi un paquet est installé, on peut lister les paquets qui en dépendent :
+
+<pre><code class="language-bash">apt-cache rdepends --recurse --installed &quot;$package_name&quot;</code></pre>
+<h2>dpkg</h2>
+
+<h3>Quel paquet détient ce fichier ?</h3>
+
+<pre><code class="language-bash">dpkg -S &quot;$file_path&quot;</code></pre>
+<h3>Quels fichiers ont été installés par ce paquet ?</h3>
+
+<pre><code class="language-bash">dpkg -L &quot;$package_name&quot;</code></pre>
+<h3>Quels fichiers seraient installés par ce fichier .deb ?</h3>
+
+<pre><code class="language-bash">dpkg -c &quot;$deb_path&quot;</code></pre>
+<h3>Vue condensée des fichiers installés</h3>
+
+<p>Affiche une vue condensée des paquets installés, contenant notamment leur état
+d'installation, leur version, ainsi qu'une description courte.</p>
+
+<pre><code class="language-bash"># Tous les paquets installés :
+dpkg -l
+
+# Seulement les paquets spécifiés :
+dpkg -l &quot;$package1&quot; &quot;$package2&quot; # …</code></pre>    </div>
+    
+    <aside>
+        <p><a href="/" class="return-link">Retour</a></p>
+    </aside>
+
+    <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
+</article>
+
+    <script src="/assets/javascripts/prototypes.js"></script>
+    <script src="/assets/javascripts/polyfills.js"></script>
+
+    <script src="/assets/javascripts/prism.js"></script>
+
+    <script src="/assets/javascripts/external-links-targets.js"></script>
+    <script src="/assets/javascripts/return-links.js"></script>
+    <script src="/assets/javascripts/click-to-reveal.js"></script>
+  </body>
+</html>
