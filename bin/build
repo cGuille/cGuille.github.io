@@ -4,10 +4,13 @@ set -eu
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ROOT_DIR="$(realpath "${SCRIPT_DIR}/..")"
-source "${ROOT_DIR}/bin/logger.bash"
 
 DOCS_DIR="${ROOT_DIR}/docs/"
 DOCS_BACKUP="${ROOT_DIR}/docs.bak/"
+
+log() {
+    echo "[$(date +%T)]" "$@"
+}
 
 BUILD_DIR="$(mktemp -d)"
 
@@ -18,10 +21,7 @@ echo -n 'notes.cguille.net' > "$BUILD_DIR"/CNAME
 
 log "⋅ Build pages"
 
-find "${ROOT_DIR}/src/pages" \
-    -type f -name '*.php' \
-    -print0 \
-    | xargs -0 --max-args=1 bash "${ROOT_DIR}/bin/build_page.bash" "$BUILD_DIR"
+php "${ROOT_DIR}/src/build_pages.php" "$BUILD_DIR"
 
 log "⋅ Copy assets"
 

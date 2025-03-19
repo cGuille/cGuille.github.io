@@ -1,18 +1,9 @@
 <?php
-require __DIR__ . '/../../helpers/posts.php';
-require __DIR__ . '/../../fragments/head.html.php';
-
-$post = get_post(__FILE__);
+require_once __DIR__ . '/../../types.php';
+assert($pageBuild instanceof PageBuild);
+$post = $pageBuild->page;
+assert($post instanceof Post);
 ?>
-
-<article id="post">
-    <header>
-        <h1><?= $post->title ?></h2>
-        <h3><?= $post->subtitle ?></h3>
-        <aside>Publié le <?= $post->published ?>.</aside>
-    </header>
-
-    <div class="post-content">
 <p>
     Bonjour ! Ces temps-ci, j'ai lu pas mal de ressources et fait pas mal d'essais sur les objets en JS, sur leurs prototypes et ce qu'il se passe quand on utilise un constructeur.<br />
     Ça ne fait pas de mal de mettre les choses au clair ; si ça vous intéresse, bonne lecture !
@@ -259,14 +250,3 @@ var prefixer = new Prefixer(function () {
 
 fileStream.pipe(prefixer).pipe(process.stdout);
 </code></pre>
-
-    </div>
-    
-    <aside>
-        <p><a href="/" class="return-link">Retour</a></p>
-    </aside>
-
-    <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
-</article>
-
-<?php require __DIR__ . '/../../fragments/foot.html.php'; ?>

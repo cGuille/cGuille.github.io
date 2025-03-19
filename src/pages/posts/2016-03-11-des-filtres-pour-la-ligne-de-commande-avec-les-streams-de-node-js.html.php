@@ -1,18 +1,9 @@
 <?php
-require __DIR__ . '/../../helpers/posts.php';
-require __DIR__ . '/../../fragments/head.html.php';
-
-$post = get_post(__FILE__);
+require_once __DIR__ . '/../../types.php';
+assert($pageBuild instanceof PageBuild);
+$post = $pageBuild->page;
+assert($post instanceof Post);
 ?>
-
-<article id="post">
-    <header>
-        <h1><?= $post->title ?></h2>
-        <h3><?= $post->subtitle ?></h3>
-        <aside>Publié le <?= $post->published ?>.</aside>
-    </header>
-
-    <div class="post-content">
 <h2>Qu'est-ce qu'un filtre ?</h2>
 
 <p>
@@ -350,14 +341,3 @@ process.stdin.pipe(new LineStream).pipe(new QueryStringExtractor).pipe(process.s
 </div>
 
 <p>Et voilà, tout va bien !</p>
-
-    </div>
-    
-    <aside>
-        <p><a href="/" class="return-link">Retour</a></p>
-    </aside>
-
-    <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
-</article>
-
-<?php require __DIR__ . '/../../fragments/foot.html.php'; ?>

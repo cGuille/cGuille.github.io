@@ -1,18 +1,9 @@
 <?php
-require __DIR__ . '/../../helpers/posts.php';
-require __DIR__ . '/../../fragments/head.html.php';
-
-$post = get_post(__FILE__);
+require_once __DIR__ . '/../../types.php';
+assert($pageBuild instanceof PageBuild);
+$post = $pageBuild->page;
+assert($post instanceof Post);
 ?>
-
-<article id="post">
-    <header>
-        <h1><?= $post->title ?></h2>
-        <h3><?= $post->subtitle ?></h3>
-        <aside>Publié le <?= $post->published ?>.</aside>
-    </header>
-
-    <div class="post-content">
 <h2>Introduction</h2>
 
 <p>
@@ -243,14 +234,3 @@ impl&lt;T, P&gt; DerefMut for Prioritized&lt;T, P&gt; {
     lorsqu'on utilise le type <span class="mono">Box</span>, et comment mettre en place ce comportement dans mes propres
     types en implémentant les bons <i>traits</i>.
 </p>
-
-    </div>
-    
-    <aside>
-        <p><a href="/" class="return-link">Retour</a></p>
-    </aside>
-
-    <footer>Vous avez vraiment tout lu ? Bravo ! <a href="#">↑ Vous pouvez remonter maintenant ↑</a>.</footer>
-</article>
-
-<?php require __DIR__ . '/../../fragments/foot.html.php'; ?>
